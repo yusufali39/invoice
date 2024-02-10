@@ -1,0 +1,44 @@
+body{
+
+    background-color: #1d2630;
+
+}
+*{
+    color: #fff;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    width: max-content;
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#cart-table th,
+#cart-table td{
+    text-align: center;
+}
+#total-qty{
+    margin-bottom: 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+#total-cost{
+    font-size: 20px;
+    font-weight: bold;
+}
+#generate-invoice{
+    display: flex;
+    margin: 0 auto;
+    margin-bottom: 5px;
+}
+@media print{
+    .no-print{
+        display: none;
+    }
+}
