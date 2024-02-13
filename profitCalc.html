@@ -15,7 +15,7 @@
       integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="profitCalc.css" />
     <title>Ramadan</title>
   </head>
   <body>
@@ -24,12 +24,12 @@
       <button class="btn btn-success" id="generate-invoice">
         Generate Invoice
       </button>
-      <a href="profitCalc.html">profitCalc</a>
+      <a href="index.html">billCalc</a>
       <div class="row">
         <div class="col-md-6">
           <form action="" id="item-form">
             <div class="form-group mb-3">
-              <label for="customer-name">Bill to:</label>
+              <label for="customer-name">Customer Name:</label>
               <input type="text" class="form-control" id="customer-name" />
             </div>
             <div class="form-group mb-3">
@@ -37,11 +37,16 @@
               <input type="text" class="form-control" id="item-name" />
             </div>
             <div class="form-group mb-3">
-                <label for="item-qty">Item Qty:</label>
-                <input type="text" class="form-control" id="item-qty" />
+              <label for="item-qty">Qty:</label>
+              <input type="text" class="form-control" id="item-qty" />
+            </div>
+            <div class="form-group mb-3">
+                <label for="item-sale">Sale:</label>
+                <input type="text" class="form-control" id="item-sale" />
               </div>
+
             <div class="form-group mb-4">
-              <label for="item-price">Item Price:</label>
+              <label for="item-price">Purchase:</label>
               <input type="text" class="form-control" id="item-price" />
             </div>
             <button type="submit" class="btn btn-primary">Add To Cart</button>
@@ -57,15 +62,20 @@
             <thead>
               <tr>
                 <th>Item</th>
-                <th>Price</th>
                 <th>Qty</th>
-                <th>Amount</th>
+                <th>Purchase</th>
+                <th>TPAmount</th>
+                <th>Sale</th>
+                <th>TSAmount</th>
+                <th>Profit</th>
               </tr>
             </thead>
             <tbody></tbody>
           </table>
           <p id="total-qty">Total Qty : 0</p>
-          <p id="total-cost">Total Cost : 0</p>
+          <p id="total-sale">Total Sale : 0</p>
+          <p id="total-cost">Total Profit : 0</p>
+
 
         </div>
       </div>
@@ -76,6 +86,6 @@
       integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"></script>
-    <script src="script.js"></script>
+    <script src="profitCalc.js"></script>
   </body>
 </html>
