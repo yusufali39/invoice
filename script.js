@@ -80,8 +80,8 @@ $(document).ready(function () {
     <body>
         <div class="container mt-5">
             <h3 class="text-center mb-0">Ramadan Garments</h3>
-            <p class="text-center mb-0">Thana road, siwan</p>
-            <p class="text-center mt-0">8294257086</p>
+            <p class="text-center mb-0">Telhatta Bazaar Rd, Siwan</p>
+            <p class="text-center mt-0">7004799856</p>
             <p class="mb-0"><strong>Bill to: </strong> ${customerName}</p>
             <p><strong>Date:</strong> ${getCurrentDate()}</p>
             <table class="table">
