@@ -69,42 +69,59 @@ $(document).ready(function () {
     });
     $("#total-qty").text("Total Qty: " + totalQty);
   }
-
+  var currentTime = new Date();
+  var hours = currentTime.getHours();
+  var minutes = currentTime.getMinutes();
+  var ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  var timeStr = hours + ':' + minutes + ' ' + ampm;
   function generateInvoice() {
     var invoice = `
     <html>
     <head>
         <title>Invoice</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
     </head>
     <body>
-        <div class="container mt-5">
-            <h3 class="text-center mb-0">Ramadan Garments</h3>
-            <p class="text-center mb-0">Telhatta Bazaar Rd, Siwan</p>
-            <p class="text-center mt-0">7004799856</p>
-            <p class="mb-0"><strong>Bill to: </strong> ${customerName}</p>
-            <p><strong>Date:</strong> ${getCurrentDate()}</p>
+        <div class="container mt-1">
+            <h3 class="text-center mb-0">RAMADAN GARMENTS</h3>
+            <p class="text-center mb-0">TELHATTA ROAD, SIWAN</p>
+            <p class="text-center mt-0">PNO. 7004799856</p>
+            <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
+            <p class="mb-0"><strong>Bill To: </strong> ${customerName}</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <p class="mb-0"><strong>DATE:</strong> ${getCurrentDate()}</p>
+            <p class="text-right mb-0"><strong>TM:</strong> ${timeStr}</p>
+          </div>
+          
+            <hr style="border: none; border-top: 1px dotted #000; width: 100%; margin-bottom: 0px;" />
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Item</th>
-                        <th>Price</th>
-                        <th>Qty</th>
-                        <th>Amount</th>
+                        <th style="text-align: left;">S.N</th>
+                        <th style="text-align: left;">ITEM</th>
+                        <th style="text-align: right;">QTY</th>
+                        <th style="text-align: right;">RATE</th>
+                        <th style="text-align: right;">AMNT</th>
                     </tr>
                 </thead>
                 <tbody>`;
 
-    items.forEach(function (item) {
-      invoice += `<tr><td>${item.name}</td><td>₹${item.price.toFixed(
-        2
-      )}</td><td>${item.qty}</td><td>₹${(item.price * item.qty).toFixed(
+    items.forEach(function (item, index) {
+      invoice += `<tr><td style="text-align: left;">${index + 1}</td><td style="text-align: left;">${item.name}</td><td style="text-align: right;">${item.qty}</td><td style="text-align: right;">₹${item.price.toFixed(2)}</td><td style="text-align: right;">₹${(item.price * item.qty).toFixed(
         2
       )}</td></tr>`;
     });
 
-    invoice += `</tbody></table><footer><p class="mb-0">Total Qty: ${getTotalQty()}</p><p>Total Cost: ₹${getTotalCost()}</p>
-    <p id="print-button" class="text-center">happy shopping</p></footer></div></body><script>
+    invoice += `</tbody></table><footer><p class="mb-0">Total Qty: ${getTotalQty()}</p><h1 style="text-align: left;" class="mb-0">TOTAL  <span style="float: right;"> ₹${getTotalCost()}</span></h1>
+    <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
+    <p id="print-button" class="text-center mb-0">THANKS FOR VISIT</p>
+    </footer></div></body><script>
       document.getElementById('print-button').addEventListener('click', function () {
           window.print();
       });
@@ -115,6 +132,7 @@ $(document).ready(function () {
     popup.document.write(invoice);
     popup.document.close();
   }
+
 
   function getCurrentDate() {
     var currentDate = new Date();
