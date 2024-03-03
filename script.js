@@ -85,12 +85,12 @@ $(document).ready(function () {
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js" defer></script>
     </head>
     <body>
         <div class="container mt-1">
-            <h3 class="text-center mb-0">JUNED READYMADE CENTRE</h3>
-            <p class="text-center mb-0">TELHATTA ROAD, SIWAN</p>
+            <h3 class="text-center mb-0" id="savePdfButton">JUNED READYMADE CENTRE</h3>
+            <p class="text-center mb-0" >TELHATTA ROAD, SIWAN</p>
             <p class="text-center mt-0">PNo. 7004799856</p>
             <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
             <p class="mb-0"><strong>Bill To: </strong> ${customerName}</p>
@@ -121,11 +121,27 @@ $(document).ready(function () {
     invoice += `</tbody></table><footer><p class="mb-0">Total Qty: ${getTotalQty()}</p><h1 style="text-align: left;" class="mb-0">TOTAL  <span style="float: right;"> ₹${getTotalCost()}</span></h1>
     <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
     <p id="print-button" class="text-center mb-0">THANKS FOR VISIT</p>
-    </footer></div></body><script>
+    </footer></div></body>
+    <script>
       document.getElementById('print-button').addEventListener('click', function () {
           window.print();
       });
-      </script></html>`;
+      function saveAsPDF() {
+        const element = document.body; // Choose the element that you want to print as PDF
+  
+        html2pdf(element, {
+          margin:       1,
+          filename:     'invoice.pdf',
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2 },
+          jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        });
+      }
+  
+      // Event listener for the save button
+      document.getElementById('savePdfButton').addEventListener('click', saveAsPDF);
+      </script>
+      </html>`;
 
     var popup = window.open("", "_blank");
     popup.document.open();
