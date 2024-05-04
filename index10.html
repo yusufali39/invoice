@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Save Page as PDF</title>
+</head>
+<body>
+  <!-- Your content goes here -->
+  <h1>Hello, World!</h1>
+  <p>This is some sample content.</p>
+  
+  <!-- Save button -->
+  <button id="savePdfButton">Save as PDF</button>
+  
+  <!-- Include html2pdf library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+  <script>
+    // Function to generate and download PDF
+    function saveAsPDF() {
+      const element = document.body; // Choose the element that you want to print as PDF
+
+      html2pdf(element, {
+        margin:       1,
+        filename:     'myfile.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      });
+    }
+
+    // Event listener for the save button
+    document.getElementById('savePdfButton').addEventListener('click', saveAsPDF);
+  </script>
+</body>
+</html>

@@ -1,10 +1,10 @@
 body{
 
-    background-color: #1d2630;
+    background-color: #ffffff;
 
 }
 *{
-    color: #fff;
+    color: #000000;
 }
 .select{
     margin-bottom: 5px;
@@ -42,6 +42,7 @@ th, td {
     margin: 0 auto;
     margin-bottom: 5px;
 }
+
 @media print{
     .no-print{
         display: none;

@@ -1,6 +1,7 @@
 $(document).ready(function () {
   var items = [];
   var customerName = ""; // Variable to store customer name
+  var prevDues = 0;
 
   $("#item-form").on("submit", addItemToCart);
   $("#cart-table").on("click", ".btn-danger", removeItemFromCart);
@@ -11,7 +12,7 @@ $(document).ready(function () {
 
     var itemName = $("#item-name").val();
     var itemPrice = $("#item-price").val();
-    var itemQty = parseInt($("#item-qty").val()); // Parse quantity as integer
+    var itemQty = parseInt($("#item-qty").val()); 
 
     if (
       customerName.trim() !== "" &&
@@ -37,7 +38,7 @@ $(document).ready(function () {
           '</td><td><button class= "btn btn-sm btn-danger"><i class="fa fa-trash-alt"></i></button></td></tr>'
       );
       updateTotalCost();
-      updateTotalQty(); // Update total quantity
+      updateTotalQty();
       $("#item-name").val("");
       $("#item-price").val("");
       $("#item-qty").val("");
@@ -48,7 +49,7 @@ $(document).ready(function () {
 
   function removeItemFromCart() {
     updateTotalCost();
-    updateTotalQty(); // Update total quantity
+    updateTotalQty(); 
     var index = $(this).closest("tr").index();
     items.splice(index, 1);
     $(this).closest("tr").remove();
@@ -57,18 +58,43 @@ $(document).ready(function () {
   function updateTotalCost() {
     var totalCost = 0;
     items.forEach(function (item) {
-      totalCost += item.price * item.qty; // Update total cost based on quantity
+      totalCost += item.price * item.qty; 
     });
-    $("#total-cost").text("Total Cost: ₹" + totalCost.toFixed(2)); // Change currency to rupee (₹)
+    $("#total-cost").text("Amount: ₹" + totalCost.toFixed(2));
+  }
+
+  $("#prev-dues").on("input", function () {
+    // Parse the input value as float
+    prevDues = parseFloat($(this).val());
+
+    // Update total amount
+    updateTotalAmt();
+  });
+
+  // Function to update total amount
+  function updateTotalAmt() {
+    var totalAmt = 0;
+    items.forEach(function (item) {
+      totalAmt += item.price * item.qty;
+    });
+
+    // Add previous dues to the total amount
+    totalAmt += prevDues;
+
+    // Display total amount
+    $("#total-amount").text("Total Amount: ₹" + totalAmt.toFixed(2));
+
+    return totalAmt; // Return the calculated total amount
   }
 
   function updateTotalQty() {
     var totalQty = 0;
     items.forEach(function (item) {
-      totalQty += item.qty; // Calculate total quantity of all items
+      totalQty += item.qty; 
     });
     $("#total-qty").text("Total Qty: " + totalQty);
   }
+
   var currentTime = new Date();
   var hours = currentTime.getHours();
   var minutes = currentTime.getMinutes();
@@ -77,7 +103,10 @@ $(document).ready(function () {
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? '0' + minutes : minutes;
   var timeStr = hours + ':' + minutes + ' ' + ampm;
+
   function generateInvoice() {
+    var totalAmt = updateTotalAmt().toFixed(2); // Call updateTotalAmt() to get the total amount
+
     var invoice = `
     <html>
     <head>
@@ -113,12 +142,20 @@ $(document).ready(function () {
                 <tbody>`;
 
     items.forEach(function (item, index) {
-      invoice += `<tr><td style="text-align: left;">${index + 1}</td><td style="text-align: left;">${item.name}</td><td style="text-align: right;">${item.qty}</td><td style="text-align: right;">₹${item.price.toFixed(2)}</td><td style="text-align: right;">₹${(item.price * item.qty).toFixed(
+      invoice += `<tr><td style="text-align: left;">${index + 1}</td><td style="text-align: left;">${item.name}</td><td style="text-align: right;">${item.qty}</td><td style="text-align: right;">₹${item.price.toFixed(
         2
-      )}</td></tr>`;
+      )}</td><td style="text-align: right;">₹${(
+        item.price * item.qty
+      ).toFixed(2)}</td></tr>`;
     });
 
-    invoice += `</tbody></table><footer><p class="mb-0">Total Qty: ${getTotalQty()}</p><h1 style="text-align: left;" class="mb-0">TOTAL  <span style="float: right;"> ₹${getTotalCost()}</span></h1>
+    invoice += `</tbody></table><footer><p class="mb-0">Total Qty: ${getTotalQty()}</p>
+    <h3 style="text-align: left;" class="mb-0">Amount  <span style="float: right;"> ₹${getTotalCost()}</span></h3>
+
+    <h3 style="text-align: left;" class="mb-0">Dues  <span style="float: right;"> ₹${prevDues}</span></h3>
+
+    <h1 style="text-align: left;" class="mb-0">TOTAL<span style="float: right;"> ₹${totalAmt}</span></h1>
+
     <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
     <p id="print-button" class="text-center mb-0">THANKS FOR VISIT</p>
     </footer></div></body>
@@ -172,7 +209,7 @@ $(document).ready(function () {
     items.forEach(function (item) {
       totalCost += item.price * item.qty;
     });
-    return totalCost.toFixed(2);
+    return totalCost;
   }
 
   // Function to update customer name
