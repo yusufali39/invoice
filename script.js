@@ -25,7 +25,6 @@ $(document).ready(function () {
 
     if (
       customerName.trim() !== "" &&
-      customerNumber.trim() !== "" &&
       itemName.trim() !== "" &&
       itemPrice.trim() !== ""
     ) {
