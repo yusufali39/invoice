@@ -162,6 +162,7 @@ $(document).ready(function () {
             <p class="text-center mt-0">PNo. 8294257086</p>
             <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
             <p class="mb-0"><strong>Bill To: </strong> ${customerName}</p>
+            <p class="mb-0"><strong>Number: </strong> ${customerName}</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <p class="mb-0"><strong>DATE:</strong> ${getCurrentDate()}</p>
                 <p class="text-right mb-0"><strong>TM:</strong> ${timeStr}</p>
@@ -200,7 +201,7 @@ $(document).ready(function () {
       2
     )}</span></h4>
 
-    <h4 style="text-align: left;" class="mb-0">Previous Dues: <span style="float: right;"> ₹${prevDues.toFixed(
+    <h4 style="text-align: left;" class="mb-0">Dues: <span style="float: right;"> ₹${prevDues.toFixed(
       2
     )}</span></h4> 
 
