@@ -1,6 +1,7 @@
 $(document).ready(function () {
   var items = [];
   var customerName = "";
+  var customerNumber = "";
   var prevDues = 0;
   var amountPaid = 0;
 
@@ -24,6 +25,7 @@ $(document).ready(function () {
 
     if (
       customerName.trim() !== "" &&
+      customerNumber.trim() !== "" &&
       itemName.trim() !== "" &&
       itemPrice.trim() !== ""
     ) {
@@ -56,7 +58,7 @@ $(document).ready(function () {
       // Focus the cursor back to the "item name" input field
       $("#item-name").focus();
     } else {
-      alert("Jawaid bhai customer name, item name, and item price fill kiiye.");
+      alert("customer name, item name, and item price fill kiiye.");
     }
   }
 
@@ -162,7 +164,7 @@ $(document).ready(function () {
             <p class="text-center mt-0">PNo. 8294257086</p>
             <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
             <p class="mb-0"><strong>Bill To: </strong> ${customerName}</p>
-            <p class="mb-0"><strong>Number: </strong> ${customerName}</p>
+            <p class="mb-0"><strong>Number: </strong> ${customerNumber}</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <p class="mb-0"><strong>DATE:</strong> ${getCurrentDate()}</p>
                 <p class="text-right mb-0"><strong>TM:</strong> ${timeStr}</p>
