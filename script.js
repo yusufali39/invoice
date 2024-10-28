@@ -278,4 +278,7 @@ $(document).ready(function () {
   $("#customer-name").on("input", function () {
     customerName = $(this).val();
   });
+  $("#customer-number").on("input", function () {
+    customerNumber = $(this).val();
+  });
 });
