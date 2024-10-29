@@ -160,10 +160,10 @@ $(document).ready(function () {
         <div class="container mt-1">
             <h3 class="text-center mb-0" id="savePdfButton">𝐉𝐔𝐍𝐄𝐃 𝐑𝐄𝐀𝐃𝐘𝐌𝐀𝐃𝐄 𝐂𝐄𝐍𝐓𝐑𝐄</h3>
             <p class="text-center mb-0" >TELHATTA ROAD, SIWAN</p>
-            <p class="text-center mt-0">PNo. 8294257086</p>
+            <p class="text-center mt-0">PH: 8294257086</p>
             <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
-            <p class="mb-0"><strong>Bill To: </strong> ${customerName}</p>
-            <p class="mb-0"><strong>Number: </strong> ${customerNumber}</p>
+            <p class="mb-0"><strong>BILL TO: </strong> ${customerName}</p>
+            <p class="mb-0"><strong>NUMBER: </strong> ${customerNumber}</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <p class="mb-0"><strong>DATE:</strong> ${getCurrentDate()}</p>
                 <p class="text-right mb-0"><strong>TM:</strong> ${timeStr}</p>
@@ -196,25 +196,25 @@ $(document).ready(function () {
     });
 
     invoice += `</tbody></table><footer>
-    <p class="mb-0">Total Qty: ${getTotalQty()}</p>
+    <p class="mb-0">TOTAL QTY: ${getTotalQty()}</p>
 
-    <h4 style="text-align: left;" class="mb-0">Total Cost: <span style="float: right;"> ₹${totalCost.toFixed(
+    <h4 style="text-align: left;" class="mb-0">TOTAL: <span style="float: right;"> ₹${totalCost.toFixed(
       2
     )}</span></h4>
 
-    <h4 style="text-align: left;" class="mb-0">Dues: <span style="float: right;"> ₹${prevDues.toFixed(
+    <h4 style="text-align: left;" class="mb-0">DUES: <span style="float: right;"> ₹${prevDues.toFixed(
       2
     )}</span></h4> 
 
-    <h3 style="text-align: left;" class="mb-0">Total Amount: <span style="float: right;"> ₹${totalAmt.toFixed(
+    <h3 style="text-align: left;" class="mb-0">TOTAL AMOUNT: <span style="float: right;"> ₹${totalAmt.toFixed(
       2
     )}</span></h3>
 
-    <h3 style="text-align: left;" class="mb-0">Amount Paid: <span style="float: right;"> ₹${amountPaid.toFixed(
+    <h3 style="text-align: left;" class="mb-0">CASH PAID: <span style="float: right;"> ₹${amountPaid.toFixed(
       2
     )}</span></h3>
 
-    <h3 style="text-align: left;" class="mb-0">Current Due: <span style="float: right;"> ₹${currentDue.toFixed(
+    <h3 style="text-align: left;" class="mb-0">CURR DUES: <span style="float: right;"> ₹${currentDue.toFixed(
       2
     )}</span></h3> 
 
