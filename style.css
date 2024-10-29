@@ -10,7 +10,11 @@ body{
         padding: 5px;
         width: 100%;
     }
-    
+    input[type="text"],
+input[type="number"] {
+  text-transform: uppercase;
+}
+
     table {
         width: 100%;
         border-collapse: collapse;
