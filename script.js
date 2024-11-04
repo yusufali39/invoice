@@ -226,6 +226,7 @@ $(document).ready(function () {
     <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
 
     <p id="print-button" class="text-center mb-0">𝙏𝙃𝘼𝙉𝙆𝙎 𝙁𝙊𝙍 𝙑𝙄𝙎𝙄𝙏</p>
+        <p id="print-button" class="text-center mb-0">no return, no exchange</p>
     </footer></div></body>
 
     <script>
