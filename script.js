@@ -165,7 +165,7 @@ $(document).ready(function () {
     <body>
         <div class="container mt-1">
             <h3 class="text-center mb-0" id="savePdfButton">
-  <strong>𝐉𝐔𝐍𝐄𝐃 𝐑𝐄𝐀𝐃𝐘𝐌𝐀𝐃𝐄 𝐂𝐄𝐍𝐓𝐑𝐄</strong>
+  <strong>JUNED READYMADE CENTRE </strong>
 </h3>
             <p class="text-center mb-0" >TELHATTA ROAD, SIWAN</p>
             <p class="text-center mt-0">PH: 8294257086</p>
