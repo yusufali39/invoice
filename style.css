@@ -2,15 +2,14 @@
 
 body{
     background-color: #fff;
+      font-family: "VT323", monospace;
+  font-weight: 400;
+  font-style: normal;
     }
     *{
         color: #000000;
     }
-.vt323-regular {
-  font-family: "VT323", monospace;
-  font-weight: 400;
-  font-style: normal;
-}
+
 
     .select{
         margin-bottom: 5px;
