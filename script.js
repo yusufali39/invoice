@@ -147,12 +147,6 @@ $(document).ready(function () {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js" defer></script>
 
       <style>
-      @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=VT323&family=Wix+Madefor+Text:ital,wght@0,400..800;1,400..800&display=swap');
-      body{
-        font-family: "VT323", serif;
-  font-weight: 400;
-  font-style: normal;
-      }
       .logo-img {
         width: 80px; 
         height: auto; 
@@ -165,10 +159,13 @@ $(document).ready(function () {
     <body>
         <div class="container mt-1">
             <h3 class="text-center mb-0" id="savePdfButton">
-  <strong>JUNED READYMADE CENTRE </strong>
+  <strong>𝗝𝗨𝗡𝗘𝗗 𝗥𝗘𝗔𝗗𝗬𝗠𝗔𝗗𝗘 𝗖𝗘𝗡𝗧𝗥𝗘</strong>
 </h3>
             <p class="text-center mb-0" >TELHATTA ROAD, SIWAN</p>
-            <p class="text-center mt-0">PH: 8294257086</p>
+            <p class="text-center mt-0">
+            <strong>𝙋𝙃: 𝟖𝟐𝟗𝟒𝟐𝟓𝟕𝟎𝟖𝟔 </strong>
+            
+            </p>
             <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
             <p class="mb-0"><strong>BILL TO: </strong> ${customerName}</p>
             <p class="mb-0"><strong>NUMBER: </strong> ${customerNumber}</p>
@@ -228,7 +225,7 @@ $(document).ready(function () {
 
     <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
 
-    <p id="print-button" class="text-center mb-0">THANKS FOR VISIT</p>
+    <p id="print-button" class="text-center mb-0">𝙏𝙃𝘼𝙉𝙆𝙎 𝙁𝙊𝙍 𝙑𝙄𝙎𝙄𝙏</p>
     </footer></div></body>
 
     <script>
