@@ -147,6 +147,12 @@ $(document).ready(function () {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js" defer></script>
 
       <style>
+      @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=VT323&family=Wix+Madefor+Text:ital,wght@0,400..800;1,400..800&display=swap');
+      .body{
+        font-family: "VT323", serif;
+  font-weight: 400;
+  font-style: normal;
+      }
       .logo-img {
         width: 80px; 
         height: auto; 
