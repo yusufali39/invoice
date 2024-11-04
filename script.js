@@ -159,13 +159,10 @@ $(document).ready(function () {
     <body>
         <div class="container mt-1">
             <h3 class="text-center mb-0" id="savePdfButton">
-  <strong>𝗝𝗨𝗡𝗘𝗗 𝗥𝗘𝗔𝗗𝗬𝗠𝗔𝗗𝗘 𝗖𝗘𝗡𝗧𝗥𝗘</strong>
+  <strong>𝐉𝐔𝐍𝐄𝐃 𝐑𝐄𝐀𝐃𝐘𝐌𝐀𝐃𝐄 𝐂𝐄𝐍𝐓𝐑𝐄</strong>
 </h3>
             <p class="text-center mb-0" >TELHATTA ROAD, SIWAN</p>
-            <p class="text-center mt-0">
-            <strong>𝙋𝙃: 𝟖𝟐𝟗𝟒𝟐𝟓𝟕𝟎𝟖𝟔 </strong>
-            
-            </p>
+            <p class="text-center mt-0">𝙋𝙃: 8294257086</p>
             <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
             <p class="mb-0"><strong>BILL TO: </strong> ${customerName}</p>
             <p class="mb-0"><strong>NUMBER: </strong> ${customerNumber}</p>
@@ -226,7 +223,6 @@ $(document).ready(function () {
     <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
 
     <p id="print-button" class="text-center mb-0">𝙏𝙃𝘼𝙉𝙆𝙎 𝙁𝙊𝙍 𝙑𝙄𝙎𝙄𝙏</p>
-        <p id="print-button" class="text-center mb-0">no return, no exchange</p>
     </footer></div></body>
 
     <script>
