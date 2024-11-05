@@ -209,17 +209,17 @@ $(document).ready(function () {
       2
     )}</span></h4> 
 
-    <h3 style="text-align: left;" class="mb-0">TOTAL AMOUNT: <span style="float: right; font-weight: 700; font-size: 35px;"> ₹${totalAmt.toFixed(
+    <h3 style="text-align: left;" class="mb-0">TOTAL AMOUNT: <span style="float: right; font-weight: 700; font-size: 33px;"> ₹${totalAmt.toFixed(
       2
     )}</span></h3>
 
-    <h4 style="text-align: left;" class="mb-0">CASH PAID: <span style="float: right;"> ₹${amountPaid.toFixed(
+    <h5 style="text-align: left;" class="mb-0">CASH PAID: <span style="float: right;"> ₹${amountPaid.toFixed(
       2
-    )}</span></h4>
+    )}</span></h5>
 
-    <h4 style="text-align: left;" class="mb-0">CURR DUES: <span style="float: right;"> ₹${currentDue.toFixed(
+    <h5 style="text-align: left;" class="mb-0">CURR DUES: <span style="float: right;"> ₹${currentDue.toFixed(
       2
-    )}</span></h4> 
+    )}</span></h5> 
 
     <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
 
