@@ -172,7 +172,7 @@ $(document).ready(function () {
                 <p class="text-right mb-0"><strong>TM:</strong> ${timeStr}</p>
             </div>
             <p class="text-center mb-(-10)" id="savePdfButton">
-  <strong>✿ 𝐄𝐒𝐓𝐈𝐌𝐀𝐓𝐄 ✿</strong>
+  <strong>✿  𝐄 𝐒 𝐓 𝐈 𝐌 𝐀 𝐓 𝐄  ✿</strong>
 </p>
             <hr style="border: none; border-top: 1px dotted #000; width: 100%; margin-bottom: 0px;" />
             <table class="table">
