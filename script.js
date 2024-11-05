@@ -201,13 +201,13 @@ $(document).ready(function () {
     invoice += `</tbody></table><footer>
     <p class="mb-0">TOTAL QTY: ${getTotalQty()}</p>
 
-    <h4 style="text-align: left;" class="mb-0">TOTAL: <span style="float: right;"> ₹${totalCost.toFixed(
+    <h5 style="text-align: left;" class="mb-0">TOTAL: <span style="float: right;"> ₹${totalCost.toFixed(
       2
-    )}</span></h4>
+    )}</span></h5>
 
-    <h4 style="text-align: left;" class="mb-0">DUES: <span style="float: right;"> ₹${prevDues.toFixed(
+    <p style="text-align: left;" class="mb-0">DUES: <span style="float: right;"> ₹${prevDues.toFixed(
       2
-    )}</span></h4> 
+    )}</span></p> 
 
     <h3 style="text-align: left;" class="mb-0">TOTAL AMOUNT: <span style="float: right; font-weight: 700;"> ₹${totalAmt.toFixed(
       2
