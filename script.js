@@ -165,7 +165,7 @@ $(document).ready(function () {
             <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <p class="mb-0"><strong>BILL TO: </strong> ${customerName}</p>
-                <p class="text-right mb-0"><strong>NUMBER: </strong> ${customerNumber}</p>
+                <p class="text-right mb-0"><strong>No.: </strong> ${customerNumber}</p>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <p class="mb-0"><strong>DATE:</strong> ${getCurrentDate()}</p>
