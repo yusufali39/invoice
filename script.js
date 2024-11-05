@@ -209,7 +209,7 @@ $(document).ready(function () {
       2
     )}</span></h4> 
 
-    <h3 style="text-align: left;" class="mb-0">TOTAL AMOUNT: <span style="float: right; font-weight: 700; font-size: 25px;"> ₹${totalAmt.toFixed(
+    <h3 style="text-align: left;" class="mb-0">TOTAL AMOUNT: <span style="float: right; font-weight: 700; font-size: 35px;"> ₹${totalAmt.toFixed(
       2
     )}</span></h3>
 
