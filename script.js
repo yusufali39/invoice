@@ -19,7 +19,7 @@ $(document).ready(function () {
   function addItemToCart(event) {
     event.preventDefault();
 
-    var itemName = $("#item-name").val();
+    var itemName = $("#item-name").val().toUpperCase();
     var itemPrice = $("#item-price").val();
     var itemQty = parseInt($("#item-qty").val());
 
