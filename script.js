@@ -175,8 +175,8 @@ $(document).ready(function () {
             <table class="table">
                 <thead>
                     <tr>
-                        <th style="text-align: left;">S.N</th>
-                        <th style="text-align: left;">ITEM</th>
+                        <th style="text-align: left;">SN</th>
+                        <th style="text-align: left;">DESCRIPTION</th>
                         <th style="text-align: right;">QTY</th>
                         <th style="text-align: right;">RATE</th>
                         <th style="text-align: right;">AMNT</th>
@@ -209,17 +209,17 @@ $(document).ready(function () {
       2
     )}</span></h4> 
 
-    <h3 style="text-align: left;" class="mb-0">TOTAL AMOUNT: <span style="float: right;"> ₹${totalAmt.toFixed(
+    <h3 style="text-align: left;" class="mb-0">TOTAL AMOUNT: <span style="float: right; font-weight: 700;"> ₹${totalAmt.toFixed(
       2
     )}</span></h3>
 
-    <h3 style="text-align: left;" class="mb-0">CASH PAID: <span style="float: right;"> ₹${amountPaid.toFixed(
+    <h4 style="text-align: left;" class="mb-0">CASH PAID: <span style="float: right;"> ₹${amountPaid.toFixed(
       2
-    )}</span></h3>
+    )}</span></h4>
 
-    <h3 style="text-align: left;" class="mb-0">CURR DUES: <span style="float: right;"> ₹${currentDue.toFixed(
+    <h4 style="text-align: left;" class="mb-0">CURR DUES: <span style="float: right;"> ₹${currentDue.toFixed(
       2
-    )}</span></h3> 
+    )}</span></h4> 
 
     <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
 
