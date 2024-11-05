@@ -171,8 +171,8 @@ $(document).ready(function () {
                 <p class="mb-0"><strong>DATE:</strong> ${getCurrentDate()}</p>
                 <p class="text-right mb-0"><strong>TM:</strong> ${timeStr}</p>
             </div>
-            <p class="text-center mb-0" id="savePdfButton">
-  <strong>◦•●◉✿ 𝐄𝐒𝐓𝐈𝐌𝐀𝐓𝐄 ✿◉●•◦</strong>
+            <p class="text-center mb-(-10)" id="savePdfButton">
+  <strong>✿ 𝐄𝐒𝐓𝐈𝐌𝐀𝐓𝐄 ✿</strong>
 </p>
             <hr style="border: none; border-top: 1px dotted #000; width: 100%; margin-bottom: 0px;" />
             <table class="table">
