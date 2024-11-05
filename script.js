@@ -163,8 +163,10 @@ $(document).ready(function () {
 </h3>
             <p class="text-center mb-0" >TELHATTA ROAD, SIWAN; 𝙋𝙃: 8294257086</p>
             <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
-            <p class="mb-0"><strong>BILL TO: </strong> ${customerName} ; <strong>NUMBER: </strong> ${customerNumber}</p>
-            <p class="mb-0"></p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <p class="mb-0"><strong>BILL TO: </strong> ${customerName}</p>
+                <p class="text-right mb-0"><strong>NUMBER: </strong> ${customerNumber}</p>
+            </div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <p class="mb-0"><strong>DATE:</strong> ${getCurrentDate()}</p>
                 <p class="text-right mb-0"><strong>TM:</strong> ${timeStr}</p>
