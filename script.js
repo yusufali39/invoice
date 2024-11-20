@@ -62,12 +62,33 @@ $(document).ready(function () {
   }
 
   function removeItemFromCart() {
-    updateTotalCost();
-    updateTotalQty();
-    var index = $(this).closest("tr").index();
-    items.splice(index, 1);
-    $(this).closest("tr").remove();
+    var row = $(this).closest("tr");
+    var index = row.index(); // Find the index of the row to remove
+  
+    if (index >= 0) {
+      // Get the price and quantity of the item to be removed
+      var itemPrice = parseFloat(items[index].price);
+      var itemQty = parseInt(items[index].qty);
+  
+      // Subtract the item's amount from the total cost
+      var itemTotal = itemPrice * itemQty;
+  
+      // Remove the item from the `items` array
+      items.splice(index, 1);
+  
+      // Remove the corresponding row from the table
+      row.remove();
+  
+      // Update total cost and amount
+      updateTotalCost();
+      updateTotalQty();
+      updateTotalAmt(); // This will reflect the updated total including dues
+  
+      // Log the adjustment for debugging purposes (optional)
+      console.log(`Removed item: ${itemTotal} subtracted from total.`);
+    }
   }
+  
 
   function updateTotalCost() {
     var totalCost = 0;
