@@ -1,4 +1,4 @@
-$(document).ready(function () {  
+$(document).ready(function () {
   var items = [];
   var customerName = "";
   var customerNumber = "";
@@ -119,7 +119,7 @@ $(document).ready(function () {
       </head>
       <body>
           <div class="container mt-1">
-              <h3 class="text-center mb-0" id="savePdfButton"><strong>𝐉𝐔𝐍𝐄𝐃 𝐑𝐄𝐀𝐃𝐘𝐌𝐀𝐃𝐄 𝐂𝐄𝐍𝐓𝐑𝐄</strong></h3>
+              <h3 class="text-center mb-0"><strong>𝐉𝐔𝐍𝐄𝐃 𝐑𝐄𝐀𝐃𝐘𝐌𝐀𝐃𝐄 𝐂𝐄𝐍𝐓𝐑𝐄</strong></h3>
               <p class="text-center mb-0">TELHATTA ROAD, SIWAN; 𝙋𝙃: 8294257086</p>
               <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
               <div style="display: flex; justify-content: space-between;">
@@ -162,7 +162,7 @@ $(document).ready(function () {
           <h5>CASH PAID: ₹${amountPaid.toFixed(2)}</h5>
           <h5>CURR DUES: ₹${currentDue.toFixed(2)}</h5>
           <hr style="border: none; border-top: 1px dotted #000;" />
-          <p id="print-button" class="text-center">𝙏𝙃𝘼𝙉𝙆𝙎 𝙁𝙊𝙍 𝙑𝙄𝙎𝙄𝙏</p>
+          <p class="text-center">𝙏𝙃𝘼𝙉𝙆𝙎 𝙁𝙊𝙍 𝙑𝙄𝙎𝙄𝙏</p>
       </footer>
       </div>
       </body>
@@ -174,48 +174,30 @@ $(document).ready(function () {
     popup.document.close();
   }
 
-  function getCurrentDate() {
-    var currentDate = new Date();
-    var dd = String(currentDate.getDate()).padStart(2, "0");
-    var mm = String(currentDate.getMonth() + 1).padStart(2, "0");
-    var yyyy = currentDate.getFullYear();
-    return dd + "/" + mm + "/" + yyyy;
-  }
-
-  function getTotalQty() {
-    return items.reduce((sum, item) => sum + item.qty, 0);
-  }
-
-  function getTotalCost() {
-    return items.reduce((sum, item) => sum + item.price * item.qty, 0);
-  }
-
   function generateWhatsAppBill() {
     if (!customerNumber) {
       alert("Please provide a customer number to send the bill via WhatsApp.");
       return;
     }
 
-    // Generate the invoice and convert it to PDF
-    var element = document.body; // Or use the specific div you want to convert
-    var options = {
-      margin: 1,
-      filename: `invoice_${customerName || "Customer"}.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-    };
+    var totalCost = getTotalCost();
+    var totalAmt = totalCost + prevDues;
+    var currentDue = totalAmt - amountPaid;
+    var totalQty = getTotalQty();
 
-    html2pdf().from(element).set(options).toBlob().then(function (blob) {
-      // Generate a WhatsApp URL with the customer number
-      var whatsappMessage = `Hi ${customerName},\nPlease find your bill attached.`;
-      var whatsappUrl = `https://api.whatsapp.com/send?phone=${customerNumber}&text=${encodeURIComponent(
-        whatsappMessage
-      )}`;
+    var whatsappMessage = `
+Hi ${customerName},
+Your Invoice Details:
+- Total Qty: ${totalQty}
+- Total Amount: ₹${totalAmt.toFixed(2)}
+- Amount Paid: ₹${amountPaid.toFixed(2)}
+- Current Due: ₹${currentDue.toFixed(2)}
 
-      // Open WhatsApp with the URL (user will need to send manually)
-      window.open(whatsappUrl, "_blank");
-    });
+Thank you for shopping with us!
+`;
+
+    var whatsappUrl = `https://api.whatsapp.com/send?phone=${customerNumber}&text=${encodeURIComponent(whatsappMessage)}`;
+    window.open(whatsappUrl, "_blank");
   }
 
   $("#customer-name").on("input", function () {
@@ -225,4 +207,15 @@ $(document).ready(function () {
   $("#customer-number").on("input", function () {
     customerNumber = $(this).val();
   });
-});
+
+  function getCurrentDate() {
+    var currentDate = new Date();
+    var dd = String(currentDate.getDate()).padStart(2, "0");
+    var mm = String(currentDate.getMonth() + 1).padStart(2, "0");
+    var yyyy = currentDate.getFullYear();
+    return dd + "/" + mm + "/" + yyyy;
+  }
+
+  function getTotalQty() {
+    return items.reduce((sum, item) => sum + item.qty
+                        
