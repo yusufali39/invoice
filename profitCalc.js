@@ -1,4 +1,4 @@
-$(document).ready(function () { 
+$(document).ready(function () {  
   var items = [];
   var customerName = "";
   var customerNumber = "";
@@ -8,6 +8,7 @@ $(document).ready(function () {
   $("#item-form").on("submit", addItemToCart);
   $("#cart-table").on("click", ".btn-danger", removeItemFromCart);
   $("#generate-invoice").on("click", generateInvoice);
+  $("#generate-whatsapp").on("click", generateWhatsAppBill);
 
   $("#item-form input").on("keydown", function (e) {
     if (e.key === "Enter") {
@@ -50,7 +51,7 @@ $(document).ready(function () {
       $("#item-qty").val("");
       $("#item-name").focus();
     } else {
-      alert("customer name, item name, and item price fill kiiye.");
+      alert("Please fill in customer name, item name, and item price.");
     }
   }
 
@@ -64,10 +65,7 @@ $(document).ready(function () {
   }
 
   function updateTotalCost() {
-    var totalCost = 0;
-    items.forEach(function (item) {
-      totalCost += item.price * item.qty;
-    });
+    var totalCost = items.reduce((sum, item) => sum + item.price * item.qty, 0);
     $("#total-cost").text("Amount: ₹" + totalCost.toFixed(2));
   }
 
@@ -82,11 +80,7 @@ $(document).ready(function () {
   });
 
   function updateTotalAmt() {
-    var totalAmt = 0;
-    items.forEach(function (item) {
-      totalAmt += item.price * item.qty;
-    });
-    totalAmt += prevDues;
+    var totalAmt = items.reduce((sum, item) => sum + item.price * item.qty, 0) + prevDues;
     $("#total-amount").text("TOTAL : ₹" + totalAmt.toFixed(2));
     updateCurrentDue();
   }
@@ -98,10 +92,7 @@ $(document).ready(function () {
   }
 
   function updateTotalQty() {
-    var totalQty = 0;
-    items.forEach(function (item) {
-      totalQty += item.qty;
-    });
+    var totalQty = items.reduce((sum, item) => sum + item.qty, 0);
     $("#total-qty").text("Total Qty: " + totalQty);
   }
 
@@ -109,7 +100,6 @@ $(document).ready(function () {
     var totalCost = getTotalCost();
     var totalAmt = totalCost + prevDues;
     var currentDue = totalAmt - amountPaid;
-    var totalQty = getTotalQty();
 
     var currentTime = new Date();
     var hours = currentTime.getHours();
@@ -129,9 +119,7 @@ $(document).ready(function () {
       </head>
       <body>
           <div class="container mt-1">
-              <h3 class="text-center mb-0" id="savePdfButton">
-                <strong>𝐉𝐔𝐍𝐄𝐃 𝐑𝐄𝐀𝐃𝐘𝐌𝐀𝐃𝐄 𝐂𝐄𝐍𝐓𝐑𝐄</strong>
-              </h3>
+              <h3 class="text-center mb-0" id="savePdfButton"><strong>𝐉𝐔𝐍𝐄𝐃 𝐑𝐄𝐀𝐃𝐘𝐌𝐀𝐃𝐄 𝐂𝐄𝐍𝐓𝐑𝐄</strong></h3>
               <p class="text-center mb-0">TELHATTA ROAD, SIWAN; 𝙋𝙃: 8294257086</p>
               <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
               <div style="display: flex; justify-content: space-between;">
@@ -162,7 +150,7 @@ $(document).ready(function () {
                       <td>${item.qty}</td>
                       <td>₹${item.price.toFixed(2)}</td>
                       <td>₹${(item.price * item.qty).toFixed(2)}</td>
-                    </tr>`;
+                  </tr>`;
     });
 
     invoice += `</tbody></table>
@@ -178,12 +166,6 @@ $(document).ready(function () {
       </footer>
       </div>
       </body>
-      <script>
-          document.getElementById('print-button').addEventListener('click', function () { window.print(); });
-          document.getElementById('savePdfButton').addEventListener('click', function () {
-              html2pdf(document.body, { margin: 1, filename: 'invoice.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } });
-          });
-      </script>
       </html>`;
 
     var popup = window.open("", "_blank");
@@ -201,19 +183,39 @@ $(document).ready(function () {
   }
 
   function getTotalQty() {
-    var totalQty = 0;
-    items.forEach(function (item) {
-      totalQty += item.qty;
-    });
-    return totalQty;
+    return items.reduce((sum, item) => sum + item.qty, 0);
   }
 
   function getTotalCost() {
-    var totalCost = 0;
-    items.forEach(function (item) {
-      totalCost += item.price * item.qty;
+    return items.reduce((sum, item) => sum + item.price * item.qty, 0);
+  }
+
+  function generateWhatsAppBill() {
+    if (!customerNumber) {
+      alert("Please provide a customer number to send the bill via WhatsApp.");
+      return;
+    }
+
+    // Generate the invoice and convert it to PDF
+    var element = document.body; // Or use the specific div you want to convert
+    var options = {
+      margin: 1,
+      filename: `invoice_${customerName || "Customer"}.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    };
+
+    html2pdf().from(element).set(options).toBlob().then(function (blob) {
+      // Generate a WhatsApp URL with the customer number
+      var whatsappMessage = `Hi ${customerName},\nPlease find your bill attached.`;
+      var whatsappUrl = `https://api.whatsapp.com/send?phone=${customerNumber}&text=${encodeURIComponent(
+        whatsappMessage
+      )}`;
+
+      // Open WhatsApp with the URL (user will need to send manually)
+      window.open(whatsappUrl, "_blank");
     });
-    return totalCost;
   }
 
   $("#customer-name").on("input", function () {
