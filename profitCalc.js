@@ -104,6 +104,16 @@ $(document).ready(function () {
     $("#total-qty").text("Total Qty: " + totalQty);
   }
 
+  // Function to Get Total Cost
+  function getTotalCost() {
+    return items.reduce((sum, item) => sum + item.price * item.qty, 0);
+  }
+
+  // Function to Get Total Quantity
+  function getTotalQty() {
+    return items.reduce((sum, item) => sum + item.qty, 0);
+  }
+
   // Function to Generate Invoice
   function generateInvoice() {
     var totalCost = getTotalCost();
