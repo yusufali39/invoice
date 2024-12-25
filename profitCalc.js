@@ -1,4 +1,4 @@
-$(document).ready(function () {   
+$(document).ready(function () {
   var items = [];
   var customerName = "";
   var customerNumber = "";
@@ -112,90 +112,49 @@ $(document).ready(function () {
     var totalQty = getTotalQty();
 
     var currentTime = new Date();
-    var timeStr = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    var timeStr = currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
     var invoice = `
       <html>
-      <head>
+        <head>
           <title>Invoice</title>
-          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js" defer></script>
-      </head>
-      <body>
-          <div class="container mt-1">
-              <h3 class="text-center mb-0"><strong>𝐉𝐔𝐍𝐄𝐃 𝐑𝐄𝐀𝐃𝐘𝐌𝐀𝐃𝐄 𝐂𝐄𝐍𝐓𝐑𝐄</strong></h3>
-              <p class="text-center mb-0">TELHATTA ROAD, SIWAN; 𝙋𝙃: 8294257086</p>
-              <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
-              <div style="display: flex; justify-content: space-between;">
-                  <p><strong>BILL TO: </strong>${customerName}</p>
-                  <p><strong>No.: </strong>${customerNumber}</p>
-              </div>
-              <div style="display: flex; justify-content: space-between;">
-                  <p><strong>DATE:</strong> ${getCurrentDate()}</p>
-                  <p><strong>TM:</strong> ${timeStr}</p>
-              </div>
-              <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
-              <table class="table">
-                  <thead>
-                      <tr>
-                          <th>SN</th>
-                          <th>DESCRIPTION</th>
-                          <th>QTY</th>
-                          <th>RATE</th>
-                          <th>AMNT</th>
-                      </tr>
-                  </thead>
-                  <tbody>`;
-    items.forEach(function (item, index) {
-      invoice += `<tr>
-                  <td>${index + 1}</td>
-                  <td>${item.name}</td>
-                  <td>${item.qty}</td>
-                  <td>₹${item.price.toFixed(2)}</td>
-                  <td>₹${(item.price * item.qty).toFixed(2)}</td>
-              </tr>`;
-    });
-
-    invoice += `</tbody></table>
-        <footer>
-            <p>TOTAL QTY: ${totalQty}</p>
-            <h5>TOTAL: ₹${totalCost.toFixed(2)}</h5>
-            <p>DUES: ₹${prevDues.toFixed(2)}</p>
-            <h3>TOTAL AMOUNT: ₹${totalAmt.toFixed(2)}</h3>
-            <h5>CASH PAID: ₹${amountPaid.toFixed(2)}</h5>
-            <h5>CURR DUES: ₹${currentDue.toFixed(2)}</h5>
-            <hr style="border: none; border-top: 1px dotted #000;" />
-            <p id="print-button" class="text-center">𝙏𝙃𝘼𝙉𝙆𝙎 𝙁𝙊𝙍 𝙑𝙄𝙎𝙄𝙏</p>
-        </footer>
-        </div>
-        <script>
-          document.getElementById('print-button').addEventListener('click', function () { window.print(); });
-        </script>
+        </head>
+        <body>
+          <h3>Invoice for ${customerName}</h3>
+          <p>Customer Number: ${customerNumber}</p>
+          <table>
+            <thead>
+              <tr>
+                <th>SN</th>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${items
+                .map(
+                  (item, index) =>
+                    `<tr>
+                      <td>${index + 1}</td>
+                      <td>${item.name}</td>
+                      <td>${item.qty}</td>
+                      <td>₹${item.price.toFixed(2)}</td>
+                      <td>₹${(item.price * item.qty).toFixed(2)}</td>
+                    </tr>`
+                )
+                .join("")}
+            </tbody>
+          </table>
+          <p>Total: ₹${totalCost.toFixed(2)}</p>
+          <p>Prev Dues: ₹${prevDues.toFixed(2)}</p>
+          <p>Current Dues: ₹${currentDue.toFixed(2)}</p>
         </body>
-        </html>`;
-
+      </html>`;
     var popup = window.open("", "_blank");
     popup.document.open();
     popup.document.write(invoice);
     popup.document.close();
-  }
-
-  // Function to Get Current Date in DD/MM/YYYY format
-  function getCurrentDate() {
-    var currentDate = new Date();
-    var dd = String(currentDate.getDate()).padStart(2, "0");
-    var mm = String(currentDate.getMonth() + 1).padStart(2, "0");
-    var yyyy = currentDate.getFullYear();
-    return dd + "/" + mm + "/" + yyyy;
-  }
-
-  // Function to Get Total Quantity
-  function getTotalQty() {
-    return items.reduce((sum, item) => sum + item.qty, 0);
-  }
-
-  // Function to Get Total Cost
-  function getTotalCost() {
-    return items.reduce((sum, item) => sum + item.price * item.qty, 0);
   }
 
   // Function to Generate WhatsApp Bill
@@ -205,35 +164,17 @@ $(document).ready(function () {
       return;
     }
 
-    // Generate the invoice and convert it to PDF
-    var element = document.body; // Or use the specific div you want to convert
-    var options = {
-      margin: 1,
-      filename: `invoice_${customerName || "Customer"}.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-    };
+    var totalCost = getTotalCost();
+    var totalAmt = totalCost + prevDues;
+    var currentDue = totalAmt - amountPaid;
+    var totalQty = getTotalQty();
 
-    html2pdf().from(element).set(options).toBlob(function (blob) {
-      // Note: Directly sending the PDF via WhatsApp is not possible from client-side JavaScript.
-      // Instead, we provide a download link and pre-fill a WhatsApp message.
+    var whatsappMessage = `Hi ${customerName},\n\nYour Invoice:\nTotal Qty: ${totalQty}\nTotal Amount: ₹${totalAmt.toFixed(2)}\nCurrent Due: ₹${currentDue.toFixed(
+      2
+    )}\n\nThank you for shopping with us!`;
 
-      // Prompt the user to download the PDF
-      var link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = options.filename;
-      link.click();
-
-      // Generate a WhatsApp message
-      var whatsappMessage = `Hi ${customerName},\nPlease find your bill attached. Please check your downloads for the invoice PDF.`;
-
-      // Generate the WhatsApp URL
-      var whatsappUrl = `https://api.whatsapp.com/send?phone=${customerNumber}&text=${encodeURIComponent(whatsappMessage)}`;
-
-      // Open WhatsApp with the message
-      window.open(whatsappUrl, "_blank");
-    });
+    var whatsappUrl = `https://api.whatsapp.com/send?phone=${customerNumber}&text=${encodeURIComponent(whatsappMessage)}`;
+    window.open(whatsappUrl, "_blank");
   }
 
   // Event Listeners for Customer Name and Number Inputs
