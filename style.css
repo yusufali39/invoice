@@ -1,7 +1,4 @@
-@font-face {
-    font-family: 'ThermalFont';
-    src: url('path/to/thermal-printer-font.ttf') format('truetype');
-}
+
 body{
     background-color: #fff;
     font-family: 'ThermalPrinterFont', monospace;
