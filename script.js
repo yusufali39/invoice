@@ -1,13 +1,60 @@
 $(document).ready(function () {
-  var items = [];
-  var customerName = "";
-  var customerNumber = "";
-  var prevDues = 0;
-  var amountPaid = 0;
+  var items = JSON.parse(localStorage.getItem("items")) || [];
+  var customerName = localStorage.getItem("customerName") || "";
+  var customerNumber = localStorage.getItem("customerNumber") || "";
+  var prevDues = parseFloat(localStorage.getItem("prevDues")) || 0;
+  var amountPaid = parseFloat(localStorage.getItem("amountPaid")) || 0;
+
+  // Load data from localStorage on page load
+  if (items.length > 0) {
+    items.forEach(function (item) {
+      $("#cart-table tbody").append(
+        "<tr><td>" +
+          item.name +
+          "</td><td>₹" +
+          item.price.toFixed(2) +
+          "</td><td>" +
+          item.qty +
+          "</td><td>₹" +
+          (item.price * item.qty).toFixed(2) +
+          '</td><td><button class="btn btn-sm btn-danger"><i class="fa fa-trash-alt"></i></button></td></tr>'
+      );
+    });
+    updateTotalCost();
+    updateTotalQty();
+    updateTotalAmt();
+  }
 
   $("#item-form").on("submit", addItemToCart);
   $("#cart-table").on("click", ".btn-danger", removeItemFromCart);
   $("#generate-invoice").on("click", generateInvoice);
+
+  // Clear button functionality
+  $("#clear-button").on("click", function () {
+    if (confirm("Are you sure you want to clear all records?")) {
+      items = [];
+      customerName = "";
+      customerNumber = "";
+      prevDues = 0;
+      amountPaid = 0;
+
+      // Clear localStorage
+      localStorage.clear();
+
+      // Reset the UI
+      $("#cart-table tbody").empty();
+      $("#total-cost").text("Amount: ₹0.00");
+      $("#total-amount").text("TOTAL : ₹0.00");
+      $("#current-due").text("Current Due: ₹0.00");
+      $("#total-qty").text("Total Qty: 0");
+      $("#prev-dues").val("");
+      $("#amount-paid").val("");
+      $("#customer-name").val("");
+      $("#customer-number").val("");
+
+      alert("All records have been cleared!");
+    }
+  });
 
   $("#item-form input").on("keydown", function (e) {
     if (e.key === "Enter") {
@@ -44,7 +91,7 @@ $(document).ready(function () {
           item.qty +
           "</td><td>₹" +
           (item.price * item.qty).toFixed(2) +
-          '</td><td><button class= "btn btn-sm btn-danger"><i class="fa fa-trash-alt"></i></button></td></tr>'
+          '</td><td><button class="btn btn-sm btn-danger"><i class="fa fa-trash-alt"></i></button></td></tr>'
       );
       updateTotalCost();
       updateTotalQty();
@@ -56,39 +103,42 @@ $(document).ready(function () {
 
       // Focus the cursor back to the "item name" input field
       $("#item-name").focus();
+
+      saveDataToLocalStorage();
     } else {
-      alert("customer name, item name, and item price fill kiiye.");
+      alert("Customer name, item name, and item price are required.");
     }
   }
 
   function removeItemFromCart() {
     var row = $(this).closest("tr");
     var index = row.index(); // Find the index of the row to remove
-  
+
     if (index >= 0) {
       // Get the price and quantity of the item to be removed
       var itemPrice = parseFloat(items[index].price);
       var itemQty = parseInt(items[index].qty);
-  
+
       // Subtract the item's amount from the total cost
       var itemTotal = itemPrice * itemQty;
-  
+
       // Remove the item from the `items` array
       items.splice(index, 1);
-  
+
       // Remove the corresponding row from the table
       row.remove();
-  
+
       // Update total cost and amount
       updateTotalCost();
       updateTotalQty();
       updateTotalAmt(); // This will reflect the updated total including dues
-  
+
       // Log the adjustment for debugging purposes (optional)
       console.log(`Removed item: ${itemTotal} subtracted from total.`);
+
+      saveDataToLocalStorage();
     }
   }
-  
 
   function updateTotalCost() {
     var totalCost = 0;
@@ -101,11 +151,13 @@ $(document).ready(function () {
   $("#prev-dues").on("input", function () {
     prevDues = parseFloat($(this).val()) || 0;
     updateTotalAmt();
+    saveDataToLocalStorage();
   });
 
   $("#amount-paid").on("input", function () {
     amountPaid = parseFloat($(this).val()) || 0;
     updateCurrentDue();
+    saveDataToLocalStorage();
   });
 
   // Function to update total amount
@@ -136,173 +188,92 @@ $(document).ready(function () {
     $("#total-qty").text("Total Qty: " + totalQty);
   }
 
-  var currentTime = new Date();
-  var hours = currentTime.getHours();
-  var minutes = currentTime.getMinutes();
-  var ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  var timeStr = hours + ":" + minutes + " " + ampm;
-
   function generateInvoice() {
     var totalCost = getTotalCost();
     var totalAmt = totalCost + prevDues;
     var currentDue = totalAmt - amountPaid;
     var totalQty = getTotalQty();
 
-    var currentTime = new Date();
-    var hours = currentTime.getHours();
-    var minutes = currentTime.getMinutes();
-    var ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12;
-    hours = hours ? hours : 12; // Convert 0 to 12 for 12-hour format
-    minutes = minutes < 10 ? "0" + minutes : minutes; // Add leading zero if needed
-    var timeStr = hours + ":" + minutes + " " + ampm;
-
     var invoice = `
     <html>
     <head>
         <title>Invoice</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js" defer></script>
-
-      <style>
-      .logo-img {
-        width: 80px; 
-        height: auto; 
-      }
-      .d-flex {
-        justify-content: center; 
-    </style>
-
-    </head>
+      </head>
     <body>
         <div class="container mt-1">
-            <h3 class="text-center mb-0" id="savePdfButton">
-  <strong>𝐉𝐔𝐍𝐄𝐃 𝐑𝐄𝐀𝐃𝐘𝐌𝐀𝐃𝐄 𝐂𝐄𝐍𝐓𝐑𝐄</strong>
-</h3>
-            <p class="text-center mb-0" >TELHATTA ROAD, SIWAN; 𝙋𝙃: 8294257086</p>
-            <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <p class="mb-0"><strong>BILL TO: </strong> ${customerName}</p>
-                <p class="text-right mb-0"><strong>No.: </strong> ${customerNumber}</p>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <p class="mb-0"><strong>DATE:</strong> ${getCurrentDate()}</p>
-                <p class="text-right mb-0"><strong>TM:</strong> ${timeStr}</p>
-            </div>
-            <hr style="border: none; border-top: 1px dotted #000; width: 100%; margin-bottom: 0px;" />
+            <h3 class="text-center mb-0"><strong>𝐉𝐔𝐍𝐄𝐃 𝐑𝐄𝐀𝐃𝐘𝐌𝐀𝐃𝐄 𝐂𝐄𝐍𝐓𝐑𝐄</strong></h3>
+            <p class="text-center mb-0">TELHATTA ROAD, SIWAN; 𝙋𝙃: 8294257086</p>
+            <hr style="border: 1px solid">
+            <p><strong>Customer:</strong> ${customerName} (${customerNumber})</p>
+            <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+            
             <table class="table">
                 <thead>
                     <tr>
-                        <th style="text-align: left;">SN</th>
-                        <th style="text-align: left;">DESCRIPTION</th>
-                        <th style="text-align: right;">QTY</th>
-                        <th style="text-align: right;">RATE</th>
-                        <th style="text-align: right;">AMNT</th>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Qty</th>
+                        <th>Amount</th>
                     </tr>
                 </thead>
-                <tbody>`;
+                <tbody>
+                    ${generateInvoiceRows()}
+                </tbody>
+            </table>
+            
+            <p>Total Qty: ${totalQty}</p>
+            <p>Total Amount: ₹${totalCost.toFixed(2)}</p>
+            <p>Previous Dues: ₹${prevDues.toFixed(2)}</p>
+            <p>Total Due: ₹${totalAmt.toFixed(2)}</p>
+            <p>Amount Paid: ₹${amountPaid.toFixed(2)}</p>
+            <p>Current Due: ₹${currentDue.toFixed(2)}</p>
+        </div>
+    </body>
+</html>
+`;
 
-    items.forEach(function (item, index) {
-      invoice += `<tr>
-                      <td style="text-align: left;">${index + 1}</td>
-                      <td style="text-align: left;">${item.name}</td>
-                      <td style="text-align: right;">${item.qty}</td>
-                      <td style="text-align: right;">₹${item.price.toFixed(
-                        2
-                      )}</td>
-                      <td style="text-align: right;">₹${(
-                        item.price * item.qty
-                      ).toFixed(2)}</td>
-                    </tr>`;
-    });
-
-    invoice += `</tbody></table><footer>
-    <p class="mb-0">TOTAL QTY: ${getTotalQty()}</p>
-
-    <h5 style="text-align: left;" class="mb-0">TOTAL: <span style="float: right;"> ₹${totalCost.toFixed(
-      2
-    )}</span></h5>
-
-    <p style="text-align: left;" class="mb-0">DUES: <span style="float: right;"> ₹${prevDues.toFixed(
-      2
-    )}</span></p> 
-
-    <h3 style="text-align: left;" class="mb-0">TOTAL AMOUNT: <span style="float: right; font-weight: 700;"> ₹${totalAmt.toFixed(
-      2
-    )}</span></h3>
-
-    <h5 style="text-align: left;" class="mb-0">CASH PAID: <span style="float: right;"> ₹${amountPaid.toFixed(
-      2
-    )}</span></h5>
-
-    <h5 style="text-align: left;" class="mb-0">CURR DUES: <span style="float: right;"> ₹${currentDue.toFixed(
-      2
-    )}</span></h5> 
-
-    <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
-
-    <p id="print-button" class="text-center mb-0">𝙏𝙃𝘼𝙉𝙆𝙎 𝙁𝙊𝙍 𝙑𝙄𝙎𝙄𝙏</p>
-    </footer></div></body>
-
-    <script>
-      document.getElementById('print-button').addEventListener('click', function () {
-          window.print();
-      });
-      function saveAsPDF() {
-        const element = document.body; // Choose the element that you want to print as PDF
-  
-        html2pdf(element, {
-          margin:       1,
-          filename:     'invoice.pdf',
-          image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2 },
-          jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-        });
-      }
-  
-      // Event listener for the save button
-      document.getElementById('savePdfButton').addEventListener('click', saveAsPDF);
-      </script>
-      </html>`;
-
-    var popup = window.open("", "_blank");
-    popup.document.open();
-    popup.document.write(invoice);
-    popup.document.close();
-  }
-  function getCurrentDate() {
-    var currentDate = new Date();
-    var dd = String(currentDate.getDate()).padStart(2, "0");
-    var mm = String(currentDate.getMonth() + 1).padStart(2, "0"); // January is 0!
-    var yyyy = currentDate.getFullYear();
-
-    return dd + "/" + mm + "/" + yyyy;
+    var element = document.createElement("div");
+    element.innerHTML = invoice;
+    html2pdf().from(element).save();
   }
 
-  function getTotalQty() {
-    var totalQty = 0;
+  function generateInvoiceRows() {
+    var rows = "";
+
     items.forEach(function (item) {
-      totalQty += item.qty;
+      rows += `
+        <tr>
+            <td>${item.name}</td>
+            <td>₹${item.price.toFixed(2)}</td>
+            <td>${item.qty}</td>
+            <td>₹${(item.price * item.qty).toFixed(2)}</td>
+        </tr>
+      `;
     });
-    return totalQty;
+
+    return rows;
   }
 
   function getTotalCost() {
-    var totalCost = 0;
-    items.forEach(function (item) {
-      totalCost += item.price * item.qty;
-    });
-    return totalCost;
+    return items.reduce(function (total, item) {
+      return total + item.price * item.qty;
+    }, 0);
   }
 
-  // Function to update customer name
-  $("#customer-name").on("input", function () {
-    customerName = $(this).val();
-  });
-  $("#customer-number").on("input", function () {
-    customerNumber = $(this).val();
-  });
+  function getTotalQty() {
+    return items.reduce(function (total, item) {
+      return total + item.qty;
+    }, 0);
+  }
+
+  // Save data to localStorage
+  function saveDataToLocalStorage() {
+    localStorage.setItem("items", JSON.stringify(items));
+    localStorage.setItem("customerName", customerName);
+    localStorage.setItem("customerNumber", customerNumber);
+    localStorage.setItem("prevDues", prevDues);
+    localStorage.setItem("amountPaid", amountPaid);
+  }
 });
