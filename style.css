@@ -1,80 +1,165 @@
+/* Add this to your existing style.css */
 
-body{
-    background-color: #fff;
-    font-family: 'ThermalPrinterFont', monospace;
+/* General Styling */
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
 }
-    *{
-        color: #000000;
-    }
 
+.container {
+    padding: 20px;
+    animation: fadeIn 0.5s ease-in;
+}
 
-    .select{
-        margin-bottom: 5px;
-        background-color: #000;
-        padding: 5px;
-        width: 100%;
+.headtitle {
+    font-family: 'Playfair Display', serif;
+    color: #2c3e50;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    transform: translateY(-20px);
+    animation: slideDown 0.5s ease-out forwards;
+}
+
+/* Form Styling */
+.form-control {
+    transition: all 0.3s ease;
+    border: 2px solid #ddd;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52,152,219,0.2);
+    transform: scale(1.02);
+}
+
+/* Button Styling */
+.btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn-success {
+    background: #27ae60;
+}
+
+.btn-danger {
+    background: #e74c3c;
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Table Styling */
+#cart-table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 15px rgba(0,0,0,0.1);
+}
+
+#cart-table th {
+    background: #3498db;
+    color: white;
+}
+
+#cart-table tr {
+    transition: all 0.3s ease;
+}
+
+#cart-table tr:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+/* Total Section */
+#total-qty, #total-cost, #total-amount {
+    padding: 10px;
+    background: #ecf0f1;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+#total-amount {
+    font-size: 24px;
+    color: #e74c3c;
+    animation: pulse 1.5s infinite;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    to { transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
     }
     
+    .btn, #item-form, #clear-button {
+        display: none !important;
+    }
+    
+    #cart-table {
+        box-shadow: none;
+        border: 2px solid #ddd;
+    }
+}
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        width: max-content;
-    }
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-    
-    #cart-table th,
-    #cart-table td{
-        text-align: center;
-    }
-    #total-qty{
-        margin-bottom: 0;
-        font-size: 20px;
-        font-weight: bold;
-    }
-    #total-cost{
-        font-size: 20px;
-        font-weight: bold;
-    }
-    #generate-invoice{
-        display: flex;
-        margin: 0 auto;
-        margin-bottom: 5px;
-    }
-    #itembutton{
-        margin-top: 5px;
-        appearance: none;
-        background-color: #0058b0;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        border-radius: 6px;
-        box-sizing: border-box;
-        color: #ffffff;
-        cursor: pointer;
-        display: inline-block;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 20px;
-        list-style: none;
-        padding: 6px 16px;
-        position: relative;
-        transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
-        user-select: none;
-        -webkit-user-select: none;
-        touch-action: manipulation;
-        vertical-align: middle;
-        white-space: nowrap;
-        word-wrap: break-word;
-      }
-      .headtitle{
-        font-weight: 700;
-      }
-    
-    @media print{
-        .no-print{
-            display: none;
-        }
-    }
+/* Hover Effects */
+tr {
+    animation: slideIn 0.3s ease-out;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #3498db;
+    transition: width 0.3s ease;
+}
+
+.input-group:focus-within::after {
+    width: 100%;
+}
+
+/* Current Due Animation */
+#current-due {
+    color: #c0392b;
+    font-weight: bold;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0.7; }
+}
