@@ -279,11 +279,11 @@ invoice += `
     function saveAsPDF() {
       const element = document.body;
       html2pdf(element, {
-    margin: 2,  // Adjust margin to avoid cutting
+    margin: 2, 
     filename: 'invoice.pdf',
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: 'mm', format: [100, 297], orientation: 'portrait' } // Updated to 100mm width
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } // Use 'a4' to fit more content
   });
     }
     // Event listener for the save as PDF button
