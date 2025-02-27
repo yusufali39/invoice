@@ -193,23 +193,42 @@ $(document).ready(function () {
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <!-- Custom styles for 3-inch receipt -->
-    <style>
-      /* Force 3-inch width on print */
-      @media print {
-        @page {
-          size: 3in auto;
-          margin: 0;
-        }
-        body {
-          margin: 0;
-        }
-      }
-      /* Also constrain the container width for on-screen view */
-      .container {
-        width: 3in;
-        margin: 0 auto;
-      }
-    </style>
+   <style>
+            @media print {
+                body {
+                    width: 80mm; /* Set exact width for 80mm printer */
+                    font-family: Arial, sans-serif;
+                    font-size: 12px;
+                    margin: 0;
+                    padding: 0;
+                }
+                .container {
+                    width: 80mm;
+                    text-align: center;
+                }
+                h3, p {
+                    margin: 5px 0;
+                    text-align: center;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                th, td {
+                    text-align: left;
+                    padding: 3px;
+                }
+                hr {
+                    border: none;
+                    border-top: 1px dashed #000;
+                }
+                .footer {
+                    text-align: center;
+                    margin-top: 10px;
+                    font-size: 10px;
+                }
+            }
+        </style>
     <!-- html2pdf script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js" defer></script>
   </head>
@@ -267,30 +286,18 @@ invoice += `
       </footer>
     </div>
   </body>
-  <script>
-    // Trigger print on clicking "THANKS FOR VISIT"
-    document.getElementById('print-button').addEventListener('click', function () {
-      window.print();
-    });
-
-    // Save as PDF using custom 3-inch page size
-    function saveAsPDF() {
-      const element = document.body;
-      html2pdf(element, {
-        margin: 0.1, // small margin for receipts
-        filename: 'invoice.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: [3, 8], orientation: 'portrait' }
-      });
-    }
-    // Event listener for the save as PDF button
-    document.getElementById('savePdfButton').addEventListener('click', saveAsPDF);
-  </script>
+ <script>
+            window.onload = function () {
+                window.print();
+                setTimeout(function() {
+                    window.close();
+                }, 500);
+            };
+        </script>
 </html>`;
 
 
-    var popup = window.open("", "_blank");
+     var popup = window.open("", "_blank", "width=300,height=600");
     popup.document.open();
     popup.document.write(invoice);
     popup.document.close();
