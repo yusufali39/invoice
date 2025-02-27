@@ -190,42 +190,6 @@ $(document).ready(function () {
     <head>
         <title>Invoice</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-        <!-- Custom styles for 3-inch receipt -->
-    <style>
-      @media print {
-        @page {
-          margin: 0;
-          size: 80mm ${items.length * 10 + 150}mm; /* Dynamic height */
-        }
-        body { 
-          margin: 1mm;
-          width: 78mm;
-          font-size: 12px !important;
-        }
-        .print-btn { 
-          display: none;
-        }
-      }
-      * {
-        font-family: Arial, sans-serif;
-        line-height: 1.2;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 2mm 0;
-      }
-      td, th {
-        padding: 1mm;
-        text-align: left;
-      }
-      .text-right {
-        text-align: right;
-      }
-      hr {
-        margin: 2mm 0;
-      }
-    </style>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js" defer></script>
 
     </head>
@@ -304,18 +268,27 @@ $(document).ready(function () {
     </footer></div></body>
 
     <script>
-      // Auto-trigger print dialog
-      setTimeout(function() {
-        window.print();
-        window.onafterprint = function() {
-          window.close();
-        };
-      }, 500);
-    <\/script>
-      
+      document.getElementById('print-button').addEventListener('click', function () {
+          window.print();
+      });
+      function saveAsPDF() {
+        const element = document.body; // Choose the element that you want to print as PDF
+  
+        html2pdf(element, {
+          margin:       1,
+          filename:     'invoice.pdf',
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2 },
+          jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        });
+      }
+  
+      // Event listener for the save button
+      document.getElementById('savePdfButton').addEventListener('click', saveAsPDF);
+      </script>
       </html>`;
 
-    var popup = window.open("", "_blank", "width=80,height=600");
+    var popup = window.open("", "_blank");
     popup.document.open();
     popup.document.write(invoice);
     popup.document.close();
@@ -400,4 +373,3 @@ $(document).ready(function () {
         localStorage.setItem("amountPaid", amountPaid);
     }
 });
-
