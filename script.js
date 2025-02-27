@@ -198,7 +198,7 @@ $(document).ready(function () {
       /* Print style for an 80mm receipt */
       @media print {
         @page {
-          size: 80mm auto;
+          size: 100mm auto;
           margin: 0;
         }
         body {
@@ -207,7 +207,7 @@ $(document).ready(function () {
       }
       /* On-screen container width */
       .container {
-        width: 80mm;
+        width: 100mm;
         margin: 0 auto;
       }
     </style>
