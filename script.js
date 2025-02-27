@@ -279,12 +279,12 @@ invoice += `
     function saveAsPDF() {
       const element = document.body;
       html2pdf(element, {
-        margin: 0,
-        filename: 'invoice.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: [80, 200], orientation: 'portrait' }
-      });
+    margin: 2,  // Adjust margin to avoid cutting
+    filename: 'invoice.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: [100, 297], orientation: 'portrait' } // Updated to 100mm width
+  });
     }
     // Event listener for the save as PDF button
     document.getElementById('savePdfButton').addEventListener('click', saveAsPDF);
