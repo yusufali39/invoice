@@ -190,6 +190,24 @@ $(document).ready(function () {
     <head>
         <title>Invoice</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <!-- Custom styles for 3-inch receipt -->
+    <style>
+      /* Force 3-inch width on print */
+      @media print {
+        @page {
+          size: 3in auto;
+          margin: 0;
+        }
+        body {
+          margin: 0;
+        }
+      }
+      /* Also constrain the container width for on-screen view */
+      .container {
+        width: 3in;
+        margin: 0 auto;
+      }
+    </style>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js" defer></script>
 
     </head>
@@ -267,25 +285,27 @@ $(document).ready(function () {
 
     </footer></div></body>
 
-    <script>
-      document.getElementById('print-button').addEventListener('click', function () {
-          window.print();
+ <script>
+    // Trigger print on clicking "THANKS FOR VISIT"
+    document.getElementById('print-button').addEventListener('click', function () {
+      window.print();
+    });
+
+    // Save as PDF using custom 3-inch page size
+    function saveAsPDF() {
+      const element = document.body;
+      html2pdf(element, {
+        margin: 0.1, // small margin for receipts
+        filename: 'invoice.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: [3, 8], orientation: 'portrait' }
       });
-      function saveAsPDF() {
-        const element = document.body; // Choose the element that you want to print as PDF
-  
-        html2pdf(element, {
-          margin:       1,
-          filename:     'invoice.pdf',
-          image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2 },
-          jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-        });
-      }
-  
-      // Event listener for the save button
-      document.getElementById('savePdfButton').addEventListener('click', saveAsPDF);
-      </script>
+    }
+    // Event listener for the save as PDF button
+    document.getElementById('savePdfButton').addEventListener('click', saveAsPDF);
+  </script>
+      
       </html>`;
 
     var popup = window.open("", "_blank");
