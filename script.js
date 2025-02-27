@@ -185,108 +185,110 @@ $(document).ready(function () {
     minutes = minutes < 10 ? "0" + minutes : minutes; // Add leading zero if needed
     var timeStr = hours + ":" + minutes + " " + ampm;
 
-    var invoice = `
-    <html>
-    <head>
-        <title>Invoice</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js" defer></script>
-
-    </head>
-    <body>
-        <div class="container mt-1">
-        <h3 class="text-center mb-0" id="savePdfButton">
-            <strong>𝐉𝐔𝐍𝐄𝐃 𝐑𝐄𝐀𝐃𝐘𝐌𝐀𝐃𝐄 𝐂𝐄𝐍𝐓𝐑𝐄</strong>
-        </h3>
-             <p class="text-center mb-0">TELHATTA ROAD, SIWAN; 𝙋𝙃: 8294257086</p>
-            <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
-
-    <div style="display: flex; justify-content: space-between; align-items: center;">
+    
+  var invoice = `
+<html>
+  <head>
+    <title>Invoice</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- Custom styles for 3-inch receipt -->
+    <style>
+      /* Force 3-inch width on print */
+      @media print {
+        @page {
+          size: 3in auto;
+          margin: 0;
+        }
+        body {
+          margin: 0;
+        }
+      }
+      /* Also constrain the container width for on-screen view */
+      .container {
+        width: 3in;
+        margin: 0 auto;
+      }
+    </style>
+    <!-- html2pdf script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js" defer></script>
+  </head>
+  <body>
+    <div class="container mt-1">
+      <h3 class="text-center mb-0" id="savePdfButton">
+          <strong>𝐉𝐔𝐍𝐄𝐃 𝐑𝐄𝐀𝐃𝐘𝐌𝐀𝐃𝐄 𝐂𝐄𝐍𝐓𝐑𝐄</strong>
+      </h3>
+      <p class="text-center mb-0">TELHATTA ROAD, SIWAN; 𝙋𝙃: 8294257086</p>
+      <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
+      <div style="display: flex; justify-content: space-between; align-items: center;">
         <p class="mb-0"><strong>BILL TO:</strong> ${customerName}</p>
         <p class="mb-0"><strong>No.:</strong> ${customerNumber}</p>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <p class="mb-0"><strong>DATE:</strong> ${getCurrentDate()}</p>
+        <p class="text-right mb-0"><strong>TM:</strong> ${timeStr}</p>
+      </div>
+      <hr style="border: none; border-top: 1px dotted #000; width: 100%; margin-bottom: 0px;" />
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="text-align: left;">SN</th>
+            <th style="text-align: left;">DESCRIPTION</th>
+            <th style="text-align: right;">QTY</th>
+            <th style="text-align: right;">RATE</th>
+            <th style="text-align: right;">AMNT</th>
+          </tr>
+        </thead>
+        <tbody>`;
+      
+items.forEach(function (item, index) {
+  invoice += `<tr>
+                <td style="text-align: left;">${index + 1}</td>
+                <td style="text-align: left;">${item.name}</td>
+                <td style="text-align: right;">${item.qty}</td>
+                <td style="text-align: right;">₹${item.price.toFixed(2)}</td>
+                <td style="text-align: right;">₹${(item.price * item.qty).toFixed(2)}</td>
+              </tr>`;
+});
+
+invoice += `
+        </tbody>
+      </table>
+      <footer>
+        <p class="mb-0">TOTAL QTY: ${getTotalQty()}</p>
+        <h4 style="text-align: left;" class="mb-0">TOTAL: <span style="float: right;"> ₹${totalCost.toFixed(2)}</span></h4>
+        <h6 style="text-align: left;" class="mb-0">DUES: <span style="float: right;"> ₹${prevDues.toFixed(2)}</span></h6>
+        <h3 style="text-align: left;" class="mb-0">TOTAL AMOUNT: <span style="float: right;"> ₹${totalAmt.toFixed(2)}</span></h3>
+        <h4 style="text-align: left;" class="mb-0">CASH PAID: <span style="float: right;"> ₹${amountPaid.toFixed(2)}</span></h4>
+        <h4 style="text-align: left;" class="mb-0">CURR DUES: <span style="float: right;"> ₹${currentDue.toFixed(2)}</span></h4>
+        <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
+        <!-- Clicking this text will trigger window.print() -->
+        <p id="print-button" class="text-center mb-0">THANKS FOR VISIT</p>
+      </footer>
     </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <p class="mb-0"><strong>DATE:</strong> ${getCurrentDate()}</p>
-                <p class="text-right mb-0"><strong>TM:</strong> ${timeStr}</p>
-            </div>
-            <hr style="border: none; border-top: 1px dotted #000; width: 100%; margin-bottom: 0px;" />
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th style="text-align: left;">SN</th>
-                        <th style="text-align: left;">DESCRIPTION</th>
-                        <th style="text-align: right;">QTY</th>
-                        <th style="text-align: right;">RATE</th>
-                        <th style="text-align: right;">AMNT</th>
-                    </tr>
-                </thead>
-                <tbody>`;
-
-    items.forEach(function (item, index) {
-      invoice += `<tr>
-                      <td style="text-align: left;">${index + 1}</td>
-                      <td style="text-align: left;">${item.name}</td>
-                      <td style="text-align: right;">${item.qty}</td>
-                      <td style="text-align: right;">₹${item.price.toFixed(
-                        2
-                      )}</td>
-                      <td style="text-align: right;">₹${(
-                        item.price * item.qty
-                      ).toFixed(2)}</td>
-                    </tr>`;
+  </body>
+  <script>
+    // Trigger print on clicking "THANKS FOR VISIT"
+    document.getElementById('print-button').addEventListener('click', function () {
+      window.print();
     });
 
-    invoice += `</tbody></table><footer>
-    <p class="mb-0">TOTAL QTY: ${getTotalQty()}</p>
-
-     <h4 style="text-align: left;" class="mb-0">TOTAL: <span style="float: right;"> ₹${totalCost.toFixed(
-       2
-     )}</span></h4>
-
-    <h6 style="text-align: left;" class="mb-0">DUES: <span style="float: right;"> ₹${prevDues.toFixed(
-      2
-    )}</span></h6> 
-
-    <h3 style="text-align: left;" class="mb-0">TOTAL AMOUNT: <span style="float: right;"> ₹${totalAmt.toFixed(
-      2
-    )}</span></h3>
-
-    <h4 style="text-align: left;" class="mb-0">CASH PAID: <span style="float: right;"> ₹${amountPaid.toFixed(
-      2
-    )}</span></h4>
-
-    <h4 style="text-align: left;" class="mb-0">CURR DUES: <span style="float: right;"> ₹${currentDue.toFixed(
-      2
-    )}</span></h4> 
-
-    <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
-
-    <p id="print-button" class="text-center mb-0">THANKS FOR VISIT</p>
-
-
-    </footer></div></body>
-
-    <script>
-      document.getElementById('print-button').addEventListener('click', function () {
-          window.print();
+    // Save as PDF using custom 3-inch page size
+    function saveAsPDF() {
+      const element = document.body;
+      html2pdf(element, {
+        margin: 0.1, // small margin for receipts
+        filename: 'invoice.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: [3, 8], orientation: 'portrait' }
       });
-      function saveAsPDF() {
-        const element = document.body; // Choose the element that you want to print as PDF
-  
-        html2pdf(element, {
-          margin:       1,
-          filename:     'invoice.pdf',
-          image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2 },
-          jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-        });
-      }
-  
-      // Event listener for the save button
-      document.getElementById('savePdfButton').addEventListener('click', saveAsPDF);
-      </script>
-      </html>`;
+    }
+    // Event listener for the save as PDF button
+    document.getElementById('savePdfButton').addEventListener('click', saveAsPDF);
+  </script>
+</html>`;
+
 
     var popup = window.open("", "_blank");
     popup.document.open();
