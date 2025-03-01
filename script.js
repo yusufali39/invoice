@@ -192,9 +192,15 @@ $(document).ready(function () {
       <title>Invoice</title>
       <!-- Bootstrap CSS -->
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-      <!-- Custom styles for 3-inch receipt -->
    
        <style>
+             @font-face {
+        font-family: 'Arial Narrow';
+        src: local('Arial Narrow'), local('ArialNarrow'),
+             url('https://fonts.cdnfonts.com/s/19849/ARIALN.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+      }
         /* Print style for an 80mm receipt */
         @media print {
           @page {
@@ -202,6 +208,7 @@ $(document).ready(function () {
             margin: 0;
           }
           body {
+          font-family: 'Arial Narrow', 'Nimbus Sans Narrow', 'Franklin Gothic Medium', sans-serif !important;
             margin: 0;
           }
         }
@@ -210,6 +217,31 @@ $(document).ready(function () {
           width: 100mm;
           margin: 0 auto;
         }
+        .shop-title {
+        font-size: 22px !important; 
+        font-weight: 900 !important;
+        line-height: 0.5 !important;
+        margin: 2mm 0 !important;
+        text-transform: uppercase;
+    }
+        .shop-address {
+        line-height: 1.5 !important;
+        margin: 2mm 0 !important;
+        text-transform: uppercase;
+        }
+        hr {
+        margin: 0.5mm 0 !important;
+        }
+        .item-list{
+        font-weight: 700 !important;
+        line-height: 0.5 !important;
+        margin: 1mm 0 !important;
+        text-transform: uppercase;
+        }
+        .table{
+        line-height: 0.5 !important;
+        margin-bottom: 0.3mm 0 !important;
+        }
       </style>
       
       <!-- html2pdf script -->
@@ -217,11 +249,13 @@ $(document).ready(function () {
     </head>
     <body>
       <div class="container mt-1">
-        <h3 class="text-center mb-0" id="savePdfButton">
-            <strong>𝐉𝐔𝐍𝐄𝐃 𝐑𝐄𝐀𝐃𝐘𝐌𝐀𝐃𝐄 𝐂𝐄𝐍𝐓𝐑𝐄</strong>
+        <h3 class="shop-title text-center mb-0" id="savePdfButton">
+            <strong>JUNAID READYMADE CENTRE</strong>
         </h3>
-        <p class="text-center mb-0">TELHATTA ROAD, SIWAN; 𝙋𝙃: 8294257086</p>
-        <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
+        <p class="shop-address text-center mb-0">TELHATTA ROAD, SIWAN; 𝙋𝙃: 8294257086</p>
+
+        <hr class="shop-hr" style="border: none; border-top: 1px dotted #000; width: 100%;" />
+
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <p class="mb-0"><strong>BILL TO:</strong> ${customerName}</p>
           <p class="mb-0"><strong>No.:</strong> ${customerNumber}</p>
@@ -231,6 +265,7 @@ $(document).ready(function () {
           <p class="text-right mb-0"><strong>TM:</strong> ${timeStr}</p>
         </div>
         <hr style="border: none; border-top: 1px dotted #000; width: 100%; margin-bottom: 0px;" />
+
         <table class="table">
           <thead>
             <tr>
@@ -245,11 +280,11 @@ $(document).ready(function () {
         
   items.forEach(function (item, index) {
     invoice += `<tr>
-                  <td style="text-align: left;">${index + 1}</td>
-                  <td style="text-align: left;">${item.name}</td>
-                  <td style="text-align: right;">${item.qty}</td>
-                  <td style="text-align: right;">₹${item.price.toFixed(2)}</td>
-                  <td style="text-align: right;">₹${(item.price * item.qty).toFixed(2)}</td>
+                  <td class="item-list" style="text-align: left;">${index + 1}</td>
+                  <td class="item-list" style="text-align: left;">${item.name}</td>
+                  <td class="item-list" style="text-align: right;">${item.qty}</td>
+                  <td class="item-list" style="text-align: right;">₹${item.price.toFixed(2)}</td>
+                  <td class="item-list" style="text-align: right;">₹${(item.price * item.qty).toFixed(2)}</td>
                 </tr>`;
   });
   
@@ -257,12 +292,16 @@ $(document).ready(function () {
           </tbody>
         </table>
         <footer>
-          <p class="mb-0">TOTAL QTY: ${getTotalQty()}</p>
-          <h4 style="text-align: left;" class="mb-0">TOTAL: <span style="float: right;"> ₹${totalCost.toFixed(2)}</span></h4>
-          <h6 style="text-align: left;" class="mb-0">DUES: <span style="float: right;"> ₹${prevDues.toFixed(2)}</span></h6>
-          <h3 style="text-align: left;" class="mb-0">TOTAL AMOUNT: <span style="float: right;"> ₹${totalAmt.toFixed(2)}</span></h3>
-          <h4 style="text-align: left;" class="mb-0">CASH PAID: <span style="float: right;"> ₹${amountPaid.toFixed(2)}</span></h4>
-          <h4 style="text-align: left;" class="mb-0">CURR DUES: <span style="float: right;"> ₹${currentDue.toFixed(2)}</span></h4>
+
+      <div class="billing" style="display: flex; justify-content: space-between; align-items: center;">
+        <p class="mb-0">TOT-QTY: <strong>${getTotalQty()}</strong></p>
+        <h5 class="text-right mb-0">TOTAL: <strong>₹ ${totalCost.toFixed(2)}</strong></h5>
+        </div>
+          <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
+          <h5 style="text-align: left;" class="mb-0">DUES: <span style="float: right;"> ₹${prevDues.toFixed(2)}</span></h5>
+          <h5 style="text-align: left;" class="mb-0">TOTAL AMT: <span style="float: right;"> ₹${totalAmt.toFixed(2)}</span></h5>
+          <h5 style="text-align: left;" class="mb-0">CASH PAID: <span style="float: right;"> ₹${amountPaid.toFixed(2)}</span></h5>
+          <h5 style="text-align: left;" class="mb-0">CURR DUES: <span style="float: right;"> ₹${currentDue.toFixed(2)}</span></h5>
           <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
           <!-- Clicking this text will trigger window.print() -->
           <p id="print-button" class="text-center mb-0">THANKS FOR VISIT</p>
