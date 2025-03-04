@@ -239,7 +239,6 @@ $(document).ready(function () {
         text-transform: uppercase;
         }
         .table{
-        padding: 0.2rem 0.2rem;
         line-height: 0.5 !important;
         margin-bottom: 0.3mm 0 !important;
         }
