@@ -234,11 +234,12 @@ $(document).ready(function () {
         }
         .item-list{
         font-weight: 700 !important;
-        line-height: 0.5 !important;
+        line-height: 1.0 !important;
         margin: 1mm 0 !important;
         text-transform: uppercase;
         }
         .table{
+        padding: 0.2rem 0.2rem;
         line-height: 0.5 !important;
         margin-bottom: 0.3mm 0 !important;
         }
