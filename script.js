@@ -343,22 +343,22 @@ $(document).ready(function () {
         return;
       }
   
+  // Add country code (e.g., India: 91)
+  const countryCode = "91"; // Change this to your country code
+  const formattedNumber = `${countryCode}${customerNumber}`;
+        
       var totalCost = getTotalCost();
       var totalAmt = totalCost + prevDues;
       var currentDue = totalAmt - amountPaid;
       var totalQty = getTotalQty();
   
-      var whatsappMessage = `Hi ${customerName},\n\nYour Invoice:\nTotal Qty: ${totalQty}\nTotal Amount: ₹${totalAmt.toFixed(
-        2
-      )}\nCurrent Due: ₹${currentDue.toFixed(
-        2
-      )}\n\nThank you for shopping with us!`;
+  const whatsappMessage = `Hi ${customerName},\n\nYour Invoice:\nTotal Qty: ${totalQty}\nTotal Amount: ₹${totalAmt.toFixed(2)}\nCurrent Due: ₹${currentDue.toFixed(2)}\n\nThank you for shopping with us!`;
+        
   
-      var whatsappUrl = `whatsapp-business://send?phone=${customerNumber}&text=${encodeURIComponent(
-    whatsappMessage
-  )}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodeURIComponent(whatsappMessage)}`;
       window.open(whatsappUrl, "_blank");
     }
+    
     function getCurrentDate() {
       var currentDate = new Date();
       var dd = String(currentDate.getDate()).padStart(2, "0");
