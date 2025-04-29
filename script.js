@@ -355,9 +355,21 @@ $(document).ready(function () {
   const whatsappMessage = `Hi ${customerName},\n\nYour Invoice:\nTotal Qty: ${totalQty}\nTotal Amount: ₹${totalAmt.toFixed(2)}\nCurrent Due: ₹${currentDue.toFixed(2)}\n\nThank you for shopping with us!`;
         
   
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodeURIComponent(whatsappMessage)}`;
-      window.open(whatsappUrl, "_blank");
+     // 1. Try WhatsApp Business first
+  const businessUrl = `whatsapp-business://send?phone=${formattedNumber}&text=${encodeURIComponent(whatsappMessage)}`;
+  const universalUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodeURIComponent(whatsappMessage)}`;
+
+  // Open WhatsApp Business and fallback if it fails
+  const newWindow = window.open(businessUrl, "_blank");
+  
+  // Check if the window is still open after a short delay (indicates failure)
+  setTimeout(() => {
+    if (newWindow && !newWindow.closed) {
+      newWindow.close(); // Close the blank tab
+      window.open(universalUrl, "_blank"); // Fallback to universal URL
     }
+  }, 500); // Adjust delay based on testing
+}
     
     function getCurrentDate() {
       var currentDate = new Date();
