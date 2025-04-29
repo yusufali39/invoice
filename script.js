@@ -250,9 +250,9 @@ $(document).ready(function () {
     <body>
       <div class="container mt-1">
         <h3 class="shop-title text-center mb-0" id="savePdfButton">
-            <strong>JUNAID READYMADE CENTRE</strong>
+                  <img src="IMG_20250429_083027.jpg" alt="logo" style="width: 320px; height: 70px; display: block; margin: 0 auto;" />
         </h3>
-        <p class="shop-address text-center mb-0">TELHATTA ROAD, SIWAN; 𝙋𝙃: 8294257086</p>
+        
 
         <hr class="shop-hr" style="border: none; border-top: 1px dotted #000; width: 100%;" />
 
