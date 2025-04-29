@@ -354,9 +354,9 @@ $(document).ready(function () {
         2
       )}\n\nThank you for shopping with us!`;
   
-      var whatsappUrl = `https://api.whatsapp.com/send?phone=${customerNumber}&text=${encodeURIComponent(
-        whatsappMessage
-      )}`;
+      var whatsappUrl = `whatsapp-business://send?phone=${customerNumber}&text=${encodeURIComponent(
+    whatsappMessage
+  )}`;
       window.open(whatsappUrl, "_blank");
     }
     function getCurrentDate() {
