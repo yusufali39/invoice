@@ -312,7 +312,7 @@ invoice += `
 
         <hr style="border: none; border-top: 1px dotted #000; width: 100%;" />
         <p id="print-button" class="text-center mb-0">THANKS FOR VISIT</p>
-        ${addStamp ? `<div class="text-center mt-2"><img src="Logopit_1750148360789.png" alt="Stamp" style="width:120px;"></div>` : ""}
+        ${addStamp ? `<div class="text-center mt-0"><img src="Logopit_1750148360789.png" alt="Stamp" style="width:120px;"></div>` : ""}
 
       </footer>
     </div>
