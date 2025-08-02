@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bill converter into pdf</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- ✅ Added Google Font for stylish heading -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #e0eafc, #cfdef3);
+      color: #333;
+    }
+
+    /* ✅ Stylish H1 Heading */
+    h1 {
+      font-family: 'Playfair Display', serif;
+      text-align: center;
+      font-size: 2.7rem;
+      font-weight: 700;
+      margin: 30px 0 10px;
+      color: #1a1a1a;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+      margin-top: 10px;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 40px 20px;
+      background-color: #ffffffdd;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    input[type="text"] {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 16px;
+      width: 90%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #007BFF;
+      outline: none;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .custom-file-upload {
+      display: inline-block;
+      padding: 12px 25px;
+      font-size: 1rem;
+      color: white;
+      background: linear-gradient(to right, #43cea2, #185a9d);
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.4s, transform 0.2s;
+      box-shadow: 0 4px 15px rgba(24, 90, 157, 0.3);
+      margin: 10px 5px;
+    }
+
+    .custom-file-upload:hover {
+      background: linear-gradient(to right, #185a9d, #43cea2);
+      transform: scale(1.05);
+    }
+
+    button {
+      padding: 12px 25px;
+      margin: 20px 10px 0;
+      font-size: 1rem;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.4s, transform 0.2s;
+      box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #00f2fe, #4facfe);
+      transform: scale(1.05);
+    }
+
+    #previewContainer {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    img.preview {
+      max-width: 150px;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+    }
+
+    img.preview:hover {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px 10px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Styled Heading -->
+  <h1>Junaid Readymade Centre</h1>
+
+  <div class="container">
+    <h2>📸 Upload Bill and Download PDF</h2>
+
+    <!-- Stylish Choose File Button -->
+    <label for="imageInput" class="custom-file-upload">📂 Choose Photos</label>
+    <input type="file" id="imageInput" accept="image/*" multiple />
+
+    <!-- PDF Name Input -->
+    <input type="text" id="pdfName" placeholder="Enter PDF name (without .pdf)" />
+
+    <!-- Convert Button -->
+    <div id="controls">
+      <button onclick="convertToPDF()">Convert & Download PDF</button>
+    </div>
+
+    <!-- Preview Area -->
+    <div id="previewContainer"></div>
+  </div>
+
+  <script>
+    const imageInput = document.getElementById("imageInput");
+    const previewContainer = document.getElementById("previewContainer");
+    const pdfNameInput = document.getElementById("pdfName");
+    let imageFiles = [];
+    let pdfBlob = null;
+
+    imageInput.addEventListener("change", function () {
+      previewContainer.innerHTML = "";
+      imageFiles = Array.from(this.files);
+
+      imageFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.createElement("img");
+          img.src = e.target.result;
+          img.classList.add("preview");
+          previewContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+
+    async function convertToPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const pdfName = pdfNameInput.value.trim() || "converted";
+
+      for (let i = 0; i < imageFiles.length; i++) {
+        const file = imageFiles[i];
+        const reader = new FileReader();
+
+        await new Promise((resolve) => {
+          reader.onload = function (e) {
+            const img = new Image();
+            img.src = e.target.result;
+            img.onload = function () {
+              const imgWidth = 210;
+              const imgHeight = (img.height * imgWidth) / img.width;
+              if (i > 0) doc.addPage();
+              doc.addImage(img, "JPEG", 0, 0, imgWidth, imgHeight);
+              resolve();
+            };
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      pdfBlob = doc.output("blob");
+      doc.save(pdfName + ".pdf");
+    }
+  </script>
+</body>
+</html>
