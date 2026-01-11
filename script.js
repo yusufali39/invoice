@@ -435,4 +435,139 @@ setTimeout(() => {
         localStorage.setItem("prevDues", prevDues);
         localStorage.setItem("amountPaid", amountPaid);
     }
+
+
+
+  // ================== POS KEYBOARD BILLING SYSTEM ==================
+
+let selectedRowIndex = -1;
+
+// Highlight selected row in cart
+function highlightRow() {
+    $("#cart-table tbody tr").removeClass("table-active");
+    if (selectedRowIndex >= 0) {
+        $("#cart-table tbody tr").eq(selectedRowIndex).addClass("table-active");
+    }
+}
+
+$(document).keydown(function (e) {
+
+    // Prevent browser default shortcuts
+    if (e.ctrlKey && (e.key === "s" || e.key === "d")) {
+        e.preventDefault();
+    }
+
+    switch (e.key) {
+
+        case "F1":
+            e.preventDefault();
+            $("#customer-name").focus();
+            break;
+
+        case "F2":
+            e.preventDefault();
+            $("#customer-number").focus();
+            break;
+
+        case "F3":
+            e.preventDefault();
+            $("#item-name").focus();
+            break;
+
+        case "F4":
+            e.preventDefault();
+            $("#item-price").focus();
+            break;
+
+        case "F5":
+            e.preventDefault();
+            $("#item-qty").focus();
+            break;
+
+        case "F9":
+            e.preventDefault();
+            $("#prev-dues").focus();
+            break;
+
+        case "F10":
+            e.preventDefault();
+            $("#amount-paid").focus();
+            break;
+
+        case "F11":
+            e.preventDefault();
+            $("#item-name").focus();
+            break;
+
+        case "Enter":
+
+            // Add item when in item inputs
+            if ($("#item-name").is(":focus") || $("#item-price").is(":focus") || $("#item-qty").is(":focus")) {
+                $("#item-form").submit();
+            }
+
+            // Print bill when in paid input
+            if ($("#amount-paid").is(":focus")) {
+                $("#generate-invoice").click();
+            }
+            break;
+
+        case "F6":
+            e.preventDefault();
+            $("#generate-invoice").click();
+            break;
+
+        case "F12":
+            e.preventDefault();
+            $("#generate-invoice").click();
+            break;
+
+        case "F7":
+            e.preventDefault();
+            $("#generate-whatsapp").click();
+            break;
+
+        case "F8":
+            e.preventDefault();
+            $("#clear-button").click();
+            break;
+
+        case "Delete":
+            if (selectedRowIndex >= 0) {
+                $("#cart-table tbody tr").eq(selectedRowIndex).find(".btn-danger").click();
+                selectedRowIndex = -1;
+            }
+            break;
+
+        case "ArrowDown":
+            if (selectedRowIndex < items.length - 1) {
+                selectedRowIndex++;
+                highlightRow();
+            }
+            break;
+
+        case "ArrowUp":
+            if (selectedRowIndex > 0) {
+                selectedRowIndex--;
+                highlightRow();
+            }
+            break;
+
+        case "s":
+            if (e.ctrlKey) {
+                $("#generate-invoice").click();
+            }
+            break;
+
+        case "d":
+            if (e.ctrlKey) {
+                $("#stamp-button").click();
+            }
+            break;
+    }
+
+
+  
+});
 }); 
+
