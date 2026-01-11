@@ -436,13 +436,10 @@ setTimeout(() => {
         localStorage.setItem("amountPaid", amountPaid);
     }
 
-
-
-  // ================== POS KEYBOARD BILLING SYSTEM ==================
+// ================= POS KEYBOARD (REAL WORKING VERSION) =================
 
 let selectedRowIndex = -1;
 
-// Highlight selected row in cart
 function highlightRow() {
     $("#cart-table tbody tr").removeClass("table-active");
     if (selectedRowIndex >= 0) {
@@ -450,183 +447,59 @@ function highlightRow() {
     }
 }
 
-$(document).keydown(function (e) {
+window.addEventListener("keydown", function (e) {
 
-    // Prevent browser default shortcuts
-    if (e.ctrlKey && (e.key === "s" || e.key === "d")) {
+    const key = e.key.toLowerCase();
+
+    // -------- CTRL SHORTCUTS --------
+    if (e.ctrlKey) {
+
         e.preventDefault();
+
+        switch (key) {
+
+            case "n": document.getElementById("customer-name")?.focus(); break;
+            case "m": document.getElementById("customer-number")?.focus(); break;
+            case "i": document.getElementById("item-name")?.focus(); break;
+            case "p": document.getElementById("item-price")?.focus(); break;
+            case "q": document.getElementById("item-qty")?.focus(); break;
+            case "o": document.getElementById("prev-dues")?.focus(); break;
+            case "l": document.getElementById("amount-paid")?.focus(); break;
+
+            case "b": document.getElementById("generate-invoice")?.click(); break;
+            case "w": document.getElementById("generate-whatsapp")?.click(); break;
+            case "x": document.getElementById("clear-button")?.click(); break;
+            case "d": document.getElementById("stamp-button")?.click(); break;
+        }
     }
 
-    switch (e.key) {
-
-        case "F1":
-            e.preventDefault();
-            $("#customer-name").focus();
-            break;
-
-        case "F2":
-            e.preventDefault();
-            $("#customer-number").focus();
-            break;
-
-        case "F3":
-            e.preventDefault();
-            $("#item-name").focus();
-            break;
-
-        case "F4":
-            e.preventDefault();
-            $("#item-price").focus();
-            break;
-
-        case "F5":
-            e.preventDefault();
-            $("#item-qty").focus();
-            break;
-
-        case "F9":
-            e.preventDefault();
-            $("#prev-dues").focus();
-            break;
-
-        case "F10":
-            e.preventDefault();
-            $("#amount-paid").focus();
-            break;
-
-        case "F11":
-            e.preventDefault();
-            $("#item-name").focus();
-            break;
-
-        case "Enter":
-
-            // Add item when in item inputs
-            if ($("#item-name").is(":focus") || $("#item-price").is(":focus") || $("#item-qty").is(":focus")) {
-                $("#item-form").submit();
-            }
-
-            // Print bill when in paid input
-            if ($("#amount-paid").is(":focus")) {
-                $("#generate-invoice").click();
-            }
-            break;
-
-        case "F6":
-            e.preventDefault();
-            $("#generate-invoice").click();
-            break;
-
-        case "F12":
-            e.preventDefault();
-            $("#generate-invoice").click();
-            break;
-
-        case "F7":
-            e.preventDefault();
-            $("#generate-whatsapp").click();
-            break;
-
-        case "F8":
-            e.preventDefault();
-            $("#clear-button").click();
-            break;
-
-        case "Delete":
-            if (selectedRowIndex >= 0) {
-                $("#cart-table tbody tr").eq(selectedRowIndex).find(".btn-danger").click();
-                selectedRowIndex = -1;
-            }
-            break;
-
-        case "ArrowDown":
-            if (selectedRowIndex < items.length - 1) {
-                selectedRowIndex++;
-                highlightRow();
-            }
-            break;
-
-        case "ArrowUp":
-            if (selectedRowIndex > 0) {
-                selectedRowIndex--;
-                highlightRow();
-            }
-            break;
-
-        case "s":
-            if (e.ctrlKey) {
-                $("#generate-invoice").click();
-            }
-            break;
-
-        case "d":
-            if (e.ctrlKey) {
-                $("#stamp-button").click();
-            }
-            break;
-    }
-
-// ================= ANDROID SAFE POS KEYBOARD =================
-
-let selectedRowIndex = -1;
-
-function highlightRow() {
-    $("#cart-table tbody tr").removeClass("table-active");
-    if (selectedRowIndex >= 0) {
-        $("#cart-table tbody tr").eq(selectedRowIndex).addClass("table-active");
-    }
-}
-
-// CTRL + KEY SHORTCUTS
-$(document).keydown(function (e) {
-
-    if (!e.ctrlKey) return;
-
-    e.preventDefault();
-
-    switch (e.key.toLowerCase()) {
-
-        case "n": $("#customer-name").focus(); break;     // Ctrl + N
-        case "m": $("#customer-number").focus(); break;   // Ctrl + M
-        case "i": $("#item-name").focus(); break;         // Ctrl + I
-        case "p": $("#item-price").focus(); break;        // Ctrl + P
-        case "q": $("#item-qty").focus(); break;          // Ctrl + Q
-        case "o": $("#prev-dues").focus(); break;         // Ctrl + O
-        case "l": $("#amount-paid").focus(); break;       // Ctrl + L
-
-        case "b": $("#generate-invoice").click(); break;  // Ctrl + B = Print Bill
-        case "w": $("#generate-whatsapp").click(); break; // Ctrl + W
-        case "x": $("#clear-button").click(); break;      // Ctrl + X
-        case "d": $("#stamp-button").click(); break;      // Ctrl + D
-    }
-});
-
-// ENTER, CTRL+ENTER, ARROWS, DELETE
-$(document).on("keydown", function (e) {
-
-    // ENTER key
+    // -------- ENTER KEY --------
     if (e.key === "Enter") {
 
-        // Add item
-        if ($("#item-name").is(":focus") || $("#item-price").is(":focus") || $("#item-qty").is(":focus")) {
+        // Add Item
+        if (
+            document.activeElement.id === "item-name" ||
+            document.activeElement.id === "item-price" ||
+            document.activeElement.id === "item-qty"
+        ) {
             e.preventDefault();
-            $("#item-form").submit();
+            document.getElementById("item-form")?.dispatchEvent(new Event("submit", { cancelable: true }));
         }
 
-        // Print when in Paid box
-        if ($("#amount-paid").is(":focus")) {
+        // Print if Paid focused
+        if (document.activeElement.id === "amount-paid") {
             e.preventDefault();
-            $("#generate-invoice").click();
+            document.getElementById("generate-invoice")?.click();
         }
 
-        // Ctrl + Enter = Print Bill
+        // Ctrl + Enter = Print
         if (e.ctrlKey) {
             e.preventDefault();
-            $("#generate-invoice").click();
+            document.getElementById("generate-invoice")?.click();
         }
     }
 
-    // Move selection down
+    // -------- ARROW KEYS --------
     if (e.key === "ArrowDown") {
         if (selectedRowIndex < items.length - 1) {
             selectedRowIndex++;
@@ -634,7 +507,6 @@ $(document).on("keydown", function (e) {
         }
     }
 
-    // Move selection up
     if (e.key === "ArrowUp") {
         if (selectedRowIndex > 0) {
             selectedRowIndex--;
@@ -642,14 +514,18 @@ $(document).on("keydown", function (e) {
         }
     }
 
-    // Delete selected item
+    // -------- DELETE --------
     if (e.key === "Delete" && selectedRowIndex >= 0) {
-        $("#cart-table tbody tr").eq(selectedRowIndex).find(".btn-danger").click();
+        document.querySelectorAll("#cart-table tbody tr")[selectedRowIndex]
+            ?.querySelector(".btn-danger")
+            ?.click();
         selectedRowIndex = -1;
     }
-});
+
+}, true); // CAPTURE MODE
   
 });
 }); 
+
 
 
