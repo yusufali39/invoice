@@ -566,8 +566,90 @@ $(document).keydown(function (e) {
             break;
     }
 
+// ================= ANDROID SAFE POS KEYBOARD =================
 
+let selectedRowIndex = -1;
+
+function highlightRow() {
+    $("#cart-table tbody tr").removeClass("table-active");
+    if (selectedRowIndex >= 0) {
+        $("#cart-table tbody tr").eq(selectedRowIndex).addClass("table-active");
+    }
+}
+
+// CTRL + KEY SHORTCUTS
+$(document).keydown(function (e) {
+
+    if (!e.ctrlKey) return;
+
+    e.preventDefault();
+
+    switch (e.key.toLowerCase()) {
+
+        case "n": $("#customer-name").focus(); break;     // Ctrl + N
+        case "m": $("#customer-number").focus(); break;   // Ctrl + M
+        case "i": $("#item-name").focus(); break;         // Ctrl + I
+        case "p": $("#item-price").focus(); break;        // Ctrl + P
+        case "q": $("#item-qty").focus(); break;          // Ctrl + Q
+        case "o": $("#prev-dues").focus(); break;         // Ctrl + O
+        case "l": $("#amount-paid").focus(); break;       // Ctrl + L
+
+        case "b": $("#generate-invoice").click(); break;  // Ctrl + B = Print Bill
+        case "w": $("#generate-whatsapp").click(); break; // Ctrl + W
+        case "x": $("#clear-button").click(); break;      // Ctrl + X
+        case "d": $("#stamp-button").click(); break;      // Ctrl + D
+    }
+});
+
+// ENTER, CTRL+ENTER, ARROWS, DELETE
+$(document).on("keydown", function (e) {
+
+    // ENTER key
+    if (e.key === "Enter") {
+
+        // Add item
+        if ($("#item-name").is(":focus") || $("#item-price").is(":focus") || $("#item-qty").is(":focus")) {
+            e.preventDefault();
+            $("#item-form").submit();
+        }
+
+        // Print when in Paid box
+        if ($("#amount-paid").is(":focus")) {
+            e.preventDefault();
+            $("#generate-invoice").click();
+        }
+
+        // Ctrl + Enter = Print Bill
+        if (e.ctrlKey) {
+            e.preventDefault();
+            $("#generate-invoice").click();
+        }
+    }
+
+    // Move selection down
+    if (e.key === "ArrowDown") {
+        if (selectedRowIndex < items.length - 1) {
+            selectedRowIndex++;
+            highlightRow();
+        }
+    }
+
+    // Move selection up
+    if (e.key === "ArrowUp") {
+        if (selectedRowIndex > 0) {
+            selectedRowIndex--;
+            highlightRow();
+        }
+    }
+
+    // Delete selected item
+    if (e.key === "Delete" && selectedRowIndex >= 0) {
+        $("#cart-table tbody tr").eq(selectedRowIndex).find(".btn-danger").click();
+        selectedRowIndex = -1;
+    }
+});
   
 });
 }); 
+
 
