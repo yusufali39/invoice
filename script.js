@@ -257,10 +257,9 @@ $(document).ready(function () {
   <body>
     <div class="container mt-1">
       <h3 class="shop-title text-center mb-0" id="savePdfButton">
-                <img src="1770261049335.png" 
-     alt="logo" 
-     style="width:150px; height:auto; display:block; margin:0 auto;" /> 
-     </h3>
+      <img src="1770261049335.png" 
+     alt="logo" style="width:150px; height:auto; display:block; margin:0 auto;" /> 
+    </h3>
       
 
       <hr class="shop-hr" style="border: none; border-top: 1px dotted #000; width: 100%;" />
@@ -441,6 +440,7 @@ setTimeout(() => {
   
 });
 }); 
+
 
 
 
