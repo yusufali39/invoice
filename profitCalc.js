@@ -49,7 +49,8 @@ $(document).ready(function () {
         updateTotalQty(); // Update total quantity
         updateTotalCost();
         updateTotalSale();
-        updateTotalProfit(); 
+        updateTotalProfit();
+      updateAveragePercentage();
         $("#item-name").val("");
         $("#item-price").val("");
         $("#item-qty").val("");
@@ -63,6 +64,7 @@ $(document).ready(function () {
   function removeItemFromCart() {
     updateTotalCost();
     updateTotalSale(); // Update total quantity
+    updateAveragePercentage();
     var index = $(this).closest("tr").index();
     items.splice(index, 1);
     $(this).closest("tr").remove();
@@ -99,7 +101,25 @@ function updateTotalProfit() {
     });
     $("#total-sale").text("Total Sale: ₹" + totalSale);
   }
+function updateAveragePercentage() {
+  var totalPurchase = 0;
+  var totalProfit = 0;
 
+  items.forEach(function (item) {
+    totalPurchase += item.price * item.qty;
+    totalProfit += (item.sale * item.qty) - (item.price * item.qty);
+  });
+
+  var averagePercentage = 0;
+
+  if (totalPurchase > 0) {
+    averagePercentage = (totalProfit / totalPurchase) * 100;
+  }
+
+  $("#total-average").text(
+    "Average Profit % : " + averagePercentage.toFixed(2) + "%"
+  );
+}
   function generateInvoice() {
     var invoice = `
     <html>
