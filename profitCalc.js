@@ -79,6 +79,10 @@ $(document).ready(function () {
       $("#item-qty").val("");
       $("#item-sale").val("");
 
+          // Focus back to item name input
+    $("#item-name").focus();
+
+
     } else {
       alert("Please enter valid inputs.");
     }
