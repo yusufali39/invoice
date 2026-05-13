@@ -278,7 +278,7 @@ $(document).ready(function () {
         <thead>
           <tr>
             <th style="text-align: left;">SN</th>
-            <th style="text-align: left;">DESCRIPTION</th>
+            <th style="text-align: left;">ITEMS</th>
             <th style="text-align: right;">QTY</th>
             <th style="text-align: right;">RATE</th>
             <th style="text-align: right;">AMNT</th>
